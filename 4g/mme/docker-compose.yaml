@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  oai_mme:
+    image: kukkalli/magma-mme:1.0.0
+
+    

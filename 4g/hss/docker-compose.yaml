@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+    cassandra:
+        image: cassandra:2.1
+        container_name: cassandra-db
+        hostname: cassandra-db
+        networks:
+            public_net:
+                ipv4_address: 192.168.68.130
+        environment:
+            CASSANDRA_CLUSTER_NAME: "OAI HSS Cluster"
+            CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+        healthcheck:
+            test: /bin/bash -c "nodetool status"
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    cassandra_web:
+        image: delermando/docker-cassandra-web:v0.4.0
+        container_name: demo-cassandra-web
+        hostname: demo-cassandra-web
+        depends_on: [cassandra]
+        ports:
+            - "3000:3000"
+        networks:
+            public_net:
+                ipv4_address: 192.168.68.131
+        environment:
+            CASSANDRA_HOST_IP: 192.168.68.130
+            CASSANDRA_PORT: 9042
+
+    db_init:
+        image: cassandra:2.1
+        container_name: db-init
+        hostname: db-init
+        depends_on: [cassandra]
+        deploy:
+            restart_policy:
+                condition: on-failure
+                max_attempts: 10
+        networks:
+            public_net:
+                ipv4_address: 192.168.68.132
+        volumes:
+            - ./oai_db.cql:/home/oai_db.cql
+        entrypoint: /bin/bash -c "cqlsh --file /home/oai_db.cql 192.168.68.130 && echo 'OK'"
+
+    oai_hss:
+        image: oai-hss:production
+        container_name: oai-hss
+        hostname: oai-hss
+        privileged: true
+        depends_on: [cassandra]
+        networks:
+            public_net:
+                ipv4_address: 192.168.68.133
+        environment:
+            TZ: Europe/Paris
+            REALM: "${REALM}"
+            HSS_FQDN: "${HSS_FQDN}"
+            PREFIX: /openair-hss/etc
+            cassandra_Server_IP: 192.168.68.130
+            OP_KEY: 1006020f0a478bf6b699f15c062e42b3
+            LTE_K: fec86ba6eb707ed08905757b1bb44b8f
+            APN1: oai.ipv4
+            APN2: oai2.ipv4
+            FIRST_IMSI: 222010100001120
+            NB_USERS: 30
+        healthcheck:
+            test: /bin/bash -c "pgrep oai_hss"
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+networks:
+    public_net:
+        name: oai-public-net
+        ipam:
+            config:
+                - subnet: 192.168.68.128/26
