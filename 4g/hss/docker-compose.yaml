@@ -61,7 +61,7 @@ services:
                 ipv4_address: 192.168.68.133
         environment:
             TZ: Europe/Paris
-            REALM: "tu-chemnitz.de"
+            REALM: "${REALM}"
             HSS_FQDN: "${HSS_FQDN}"
             PREFIX: /openair-hss/etc
             cassandra_Server_IP: 192.168.68.130
