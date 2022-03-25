@@ -48,7 +48,7 @@ services:
         entrypoint: /bin/bash -c "cqlsh --file /home/oai_db.cql 192.168.68.130 && echo 'OK'"
 
     oai_hss:
-        image: oai-hss:production
+        image: kukkalli/oai-hss:v1.2.0
         container_name: oai-hss
         hostname: oai-hss
         privileged: true
@@ -61,7 +61,7 @@ services:
                 ipv4_address: 192.168.68.133
         environment:
             TZ: Europe/Paris
-            REALM: "${REALM}"
+            REALM: "tu-chemnitz.de"
             HSS_FQDN: "${HSS_FQDN}"
             PREFIX: /openair-hss/etc
             cassandra_Server_IP: 192.168.68.130
