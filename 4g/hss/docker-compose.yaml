@@ -23,7 +23,7 @@ services:
         hostname: demo-cassandra-web
         depends_on: [cassandra]
         ports:
-            - "3000:3000"
+            - "${HSS_MANAGEMENT_IP}:3000:3000"
         networks:
             public_net:
                 ipv4_address: 192.168.68.131
@@ -54,9 +54,9 @@ services:
         privileged: true
         depends_on: [cassandra]
         ports:
-            - "3868:3868"
-            - "5868:5868"
-            - "36412:36412/sctp"
+            - "${HSS_FABRIC_IP}:3868:3868"
+            - "${HSS_FABRIC_IP}:5868:5868"
+            - "${HSS_FABRIC_IP}:36412:36412/sctp"
         networks:
             public_net:
                 ipv4_address: 192.168.68.133
@@ -66,10 +66,10 @@ services:
             HSS_FQDN: "${HSS_FQDN}"
             PREFIX: /openair-hss/etc
             cassandra_Server_IP: 192.168.68.130
-            OP_KEY: 1006020f0a478bf6b699f15c062e42b3
-            LTE_K: fec86ba6eb707ed08905757b1bb44b8f
-            APN1: oai.ipv4
-            APN2: oai2.ipv4
+            OP_KEY: "${OP_KEY}"  # 1006020f0a478bf6b699f15c062e42b3
+            LTE_K: "${LTE_K}"  # fec86ba6eb707ed08905757b1bb44b8f
+            APN1: "${APN1}"  # oai.ipv4
+            APN2: "${APN2}"  # oai2.ipv4
             FIRST_IMSI: 222010100001120
             NB_USERS: 30
         healthcheck:
