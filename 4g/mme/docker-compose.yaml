@@ -21,27 +21,32 @@ services:
 
     magma_mme:
         image: kukkalli/magma-mme:1.0.0
-        container_name: demo-magma-mme
-        hostname: mme
+        container_name: "${SVC_CHAIN}-magma-mme"
+        hostname: "${MME_HOSTNAME}"  # mme
         privileged: true
         depends_on: [redis]
+        ports:
+            - "3870:3870/tcp"
+            - "2123:2123/udp"
+            - "5870:5870/tcp"
+            - "36412:36412/sctp"
         networks:
             public_net:
                 ipv4_address: 192.168.68.149
         environment:
-            TZ: Europe/Paris
-            REALM: openairinterface.org
+            TZ: "${TZ}"  # Europe/Paris
+            REALM: "${REALM}"  # openairinterface.org
             PREFIX: /openair-mme/etc
-            HSS_HOSTNAME: hss
-            HSS_FQDN: hss.openairinterface.org
-            HSS_REALM: openairinterface.org
-            MME_FQDN: mme.openairinterface.org
+            HSS_HOSTNAME: "${HSS_HOSTNAME}"  # hss
+            HSS_FQDN: "${HSS_FQDN}"  # hss.openairinterface.org
+            HSS_REALM: "${HSS_REALM}"  # openairinterface.org
+            MME_FQDN: "${MME_FQDN}"  # mme.openairinterface.org
             FEATURES: mme_oai
         volumes:
             - ./mme_fd.sprint.conf:/magma-mme/etc/mme_fd.conf.tmplt
             - ./mme.conf:/magma-mme/etc/mme.conf
             - ./mme-cfg.sh:/magma-mme/scripts/mme-cfg.sh
-            - ./wait-for-hss.sh
+            #- ./wait-for-hss.sh
         entrypoint: /bin/bash -c "cd /magma-mme/scripts; ./mme-cfg.sh"
         command: ["./wait-for-it.sh", "$HSS_IP", "--", "python", "app.py"]
         healthcheck:
@@ -49,6 +54,7 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5
+
 
 networks:
     public_net:

@@ -19,8 +19,8 @@ services:
 
     cassandra_web:
         image: delermando/docker-cassandra-web:v0.4.0
-        container_name: demo-cassandra-web
-        hostname: demo-cassandra-web
+        container_name: cassandra-web
+        hostname: cassandra-web
         depends_on: [cassandra]
         ports:
             - "${HSS_MANAGEMENT_IP}:3000:3000"
