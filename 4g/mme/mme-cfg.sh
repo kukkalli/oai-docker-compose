@@ -2,13 +2,14 @@
 
 INSTANCE=1
 PREFIX='/magma-mme/etc'
+declare -A MME_CONF
+
 MY_REALM="${MME_CONF[@REALM@]}"
 
 echo "HSS IP is: ${MME_CONF[@HSS_IP@]}"
 echo "MME FQDN is: ${MME_CONF[@MME_FQDN@]}"
 
 
-declare -A MME_CONF
 
 pushd $PREFIX || exit
 MME_CONF[@MME_S6A_IP_ADDR@]="192.168.68.149"
@@ -43,10 +44,10 @@ done
 sed -i -e "s@etc/freeDiameter@etc@" /magma-mme/etc/mme_fd.conf
 sed -i -e "s@bind: 127.0.0.1@bind: 192.168.61.148@" /etc/magma/redis.yml
 # Generate freeDiameter certificate
-popd
-./check_mme_s6a_certificate $PREFIX mme.${MME_CONF[@REALM@]}
+popd || exit
+./check_mme_s6a_certificate $PREFIX "${MME_CONF[@MME_FQDN@]}"
 
-cd /magma-mme
+cd /magma-mme || exit
 nohup /magma-mme/bin/sctpd > /var/log/sctpd.log 2>&1 &
 sleep 5
 /magma-mme/bin/oai_mme -c /magma-mme/etc/mme.conf
