@@ -26,30 +26,10 @@ MME_CONF[@MME_GID@]="${MME_CONF[@MME_GID@]}"
 MME_CONF[@MME_CODE@]="${MME_CONF[@MME_CODE@]}"
 MME_CONF[@SGWC_IP_ADDRESS@]="${MME_CONF[@SGWC_IP_ADDRESS@]}"
 
-
-cp mme_fd.conf.tmplt $PREFIX/mme_fd.conf
-
-for K in "${!MME_CONF[@]}"; do
-  echo "K is ${K}"
-  egrep -lRZ "$K" $PREFIX/mme_fd.conf | xargs -0 -l sed -i -e "s|$K|${MME_CONF[$K]}|g"
-  ret=$?;[[ ret -ne 0 ]] && echo "Tried to replace $K with ${MME_CONF[$K]}"
-done
-
-cp mme.conf.tmplt $PREFIX/mme_fd.conf
+cp mme.conf.tmplt mme_fd.conf
 
 for K in "${!MME_CONF[@]}"; do
   echo "K in mme.conf is ${K}"
-  egrep -lRZ "$K" $PREFIX/mme.conf | xargs -0 -l sed -i -e "s|$K|${MME_CONF[$K]}|g"
+  egrep -lRZ "$K" mme.conf | xargs -0 -l sed -i -e "s|$K|${MME_CONF[$K]}|g"
   ret=$?;[[ ret -ne 0 ]] && echo "Tried to replace $K with ${MME_CONF[$K]}"
 done
-
-sed -i -e "s@etc/freeDiameter@etc@" /magma-mme/etc/mme_fd.conf
-sed -i -e "s@bind: 127.0.0.1@bind: 192.168.61.148@" /etc/magma/redis.yml
-# Generate freeDiameter certificate
-popd || exit
-./check_mme_s6a_certificate $PREFIX "${MME_CONF[@MME_FQDN@]}"
-
-cd /magma-mme || exit
-nohup /magma-mme/bin/sctpd > /var/log/sctpd.log 2>&1 &
-sleep 5
-/magma-mme/bin/oai_mme -c /magma-mme/etc/mme.conf
