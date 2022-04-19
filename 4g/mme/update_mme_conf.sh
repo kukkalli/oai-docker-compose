@@ -6,7 +6,8 @@ declare -A MME_CONF
 
 MY_REALM="${MME_CONF[@REALM@]}"
 
-echo "HSS IP is: ${MME_CONF[@HSS_IP@]}"
+echo "My Realm is: ${MY_REALM}"
+echo "HSS IP is: ${HSS_IP}"
 echo "MME FQDN is: ${MME_CONF[@MME_FQDN@]}"
 
 
