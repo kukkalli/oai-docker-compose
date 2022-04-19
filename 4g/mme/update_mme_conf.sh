@@ -10,7 +10,7 @@ echo "HSS IP is: ${MME_CONF[@HSS_IP@]}"
 echo "MME FQDN is: ${MME_CONF[@MME_FQDN@]}"
 
 
-pushd $PREFIX || exit
+# pushd $PREFIX || exit
 MME_CONF[@MME_S6A_IP_ADDR@]="192.168.68.149"
 MME_CONF[@INSTANCE@]=$INSTANCE
 MME_CONF[@PREFIX@]=$PREFIX
