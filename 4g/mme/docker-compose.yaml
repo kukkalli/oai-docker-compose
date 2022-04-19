@@ -21,7 +21,7 @@ services:
 
     magma_mme:
         image: kukkalli/magma-mme:1.0.0
-        container_name: "${SVC_CHAIN}-magma-mme"
+        container_name: "magma-mme"
         hostname: "${MME_HOSTNAME}"  # mme
         privileged: true
         depends_on: [redis]
@@ -46,9 +46,7 @@ services:
             - ./mme_fd.sprint.conf:/magma-mme/etc/mme_fd.conf.tmplt
             - ./mme.conf:/magma-mme/etc/mme.conf
             - ./mme-cfg.sh:/magma-mme/scripts/mme-cfg.sh
-            #- ./wait-for-hss.sh
         entrypoint: /bin/bash -c "cd /magma-mme/scripts; ./mme-cfg.sh"
-        command: ["./wait-for-it.sh", "$HSS_IP", "--", "python", "app.py"]
         healthcheck:
             test: /bin/bash -c "pgrep oai_mme"
             interval: 10s
