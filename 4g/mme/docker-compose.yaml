@@ -26,21 +26,27 @@ services:
         privileged: true
         depends_on: [redis]
         ports:
-            - "3870:3870/tcp"
             - "2123:2123/udp"
+            - "3870:3870/tcp"
             - "5870:5870/tcp"
             - "36412:36412/sctp"
         networks:
             public_net:
                 ipv4_address: 192.168.68.149
         environment:
-            TZ: "${TZ}"  # Europe/Paris
-            REALM: "${REALM}"  # openairinterface.org
+            TZ: "${TZ}"
+            REALM: "${REALM}"
             PREFIX: /openair-mme/etc
-            HSS_HOSTNAME: "${HSS_HOSTNAME}"  # hss
-            HSS_FQDN: "${HSS_FQDN}"  # hss.openairinterface.org
-            HSS_REALM: "${HSS_REALM}"  # openairinterface.org
-            MME_FQDN: "${MME_FQDN}"  # mme.openairinterface.org
+            HSS_HOSTNAME: "${HSS_HOSTNAME}"
+            HSS_FQDN: "${HSS_FQDN}"
+            HSS_REALM: "${HSS_REALM}"
+            MME_FQDN: "${MME_FQDN}"
+            HSS_IP: "${HSS_IP}"
+            MCC: "${MCC}"
+            MNC: "${MNC}"
+            MME_GID: "${MME_GID}"
+            MME_CODE: "${MME_CODE}"
+            SGWC_IP_ADDRESS: "${SGWC_IP_ADDRESS}"
             FEATURES: mme_oai
         volumes:
             - ./mme_fd.sprint.conf:/magma-mme/etc/mme_fd.conf.tmplt
