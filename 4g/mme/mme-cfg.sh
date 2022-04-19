@@ -6,6 +6,7 @@ MY_REALM="${REALM}"  # 'openairinterface.org'
 
 echo "HSS IP is: " + "$HSS_IP"
 
+
 declare -A MME_CONF
 
 pushd $PREFIX || exit
