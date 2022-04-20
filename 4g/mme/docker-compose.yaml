@@ -50,7 +50,7 @@ services:
             FEATURES: mme_oai
         volumes:
             - ./mme_fd.sprint.conf:/magma-mme/etc/mme_fd.conf.tmplt
-            - ./mme.hanif.conf:/magma-mme/etc/mme.hanif.conf
+            - ./mme.conf:/magma-mme/etc/mme.conf
             - ./mme-cfg.sh:/magma-mme/scripts/mme-cfg.sh
         entrypoint: /bin/bash -c "cd /magma-mme/scripts; ./mme-cfg.sh"
         healthcheck:
