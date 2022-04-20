@@ -40,14 +40,17 @@ docker image prune --force
 
 docker image ls
 ```
+
 Check HSS logs
 ```
-docker exec -it magma-mme /bin/bash -c "tail -f /openair-hss/logs/mme.log"
+docker exec -it oai-hss /bin/bash -c "tail -f /openair-hss/logs/hss.log"
 ```
 
 
 ### Build Docker Magma MME:
 Build the Magma MME from:
+
+Check MME logs
 ```
 docker exec -it magma-mme /bin/bash -c "tail -f /var/log/mme.log"
 ```
