@@ -38,7 +38,7 @@ services:
             CASSANDRA_PORT: 9042
 
     db_init:
-        image: cassandra:2.1
+        image: cassandra:4.0.3
         container_name: db-init
         hostname: db-init
         depends_on: [cassandra]
