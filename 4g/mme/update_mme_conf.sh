@@ -29,7 +29,7 @@ MME_CONF[@SGWC_IP_ADDRESS@]="${SGWC_IP_ADDRESS}"
 cp mme.conf.tmplt mme.conf
 
 for K in "${!MME_CONF[@]}"; do
-  echo "K in mme.conf is ${K}"
+  echo "K in mme.conf is $K and value is ${MME_CONF[$K]}"
   egrep -lRZ "$K" mme.conf | xargs -0 -l sed -i -e "s|$K|${MME_CONF[$K]}|g"
   ret=$?;[[ ret -ne 0 ]] && echo "Tried to replace $K with ${MME_CONF[$K]}"
 done

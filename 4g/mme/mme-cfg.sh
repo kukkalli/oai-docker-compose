@@ -19,17 +19,17 @@ MME_CONF[@MME_FQDN@]="${MME_FQDN}"
 MME_CONF[@HSS_HOSTNAME@]="${HSS_HOSTNAME}"
 MME_CONF[@HSS_FQDN@]="${HSS_FQDN}"
 MME_CONF[@HSS_IP_ADDR@]="${HSS_IP}"
-MME_CONF[@MCC@]="${MCC}"
-MME_CONF[@MNC@]="${MNC}"
-MME_CONF[@MME_GID@]="${MME_GID}"
-MME_CONF[@MME_CODE@]="${MME_CODE}"
-MME_CONF[@SGWC_IP_ADDRESS@]="${SGWC_IP_ADDRESS}"
+# MME_CONF[@MCC@]="${MCC}"
+# MME_CONF[@MNC@]="${MNC}"
+# MME_CONF[@MME_GID@]="${MME_GID}"
+# MME_CONF[@MME_CODE@]="${MME_CODE}"
+# MME_CONF[@SGWC_IP_ADDRESS@]="${SGWC_IP_ADDRESS}"
 
 
 cp mme_fd.conf.tmplt $PREFIX/mme_fd.conf
 
 for K in "${!MME_CONF[@]}"; do
-  echo "K is ${K}"
+  echo "K in mme_fd.conf is $K and value is ${MME_CONF[$K]}"
   egrep -lRZ "$K" $PREFIX/mme_fd.conf | xargs -0 -l sed -i -e "s|$K|${MME_CONF[$K]}|g"
   ret=$?;[[ ret -ne 0 ]] && echo "Tried to replace $K with ${MME_CONF[$K]}"
 done
