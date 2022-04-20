@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
     cassandra:
-        image: cassandra:4.0.3
+        image: cassandra:2.1
         container_name: cassandra-db
         hostname: cassandra-db
         ports:
@@ -38,7 +38,7 @@ services:
             CASSANDRA_PORT: 9042
 
     db_init:
-        image: cassandra:4.0.3
+        image: cassandra:2.1
         container_name: db-init
         hostname: db-init
         depends_on: [cassandra]
