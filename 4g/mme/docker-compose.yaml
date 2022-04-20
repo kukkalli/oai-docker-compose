@@ -22,14 +22,14 @@ services:
     magma_mme:
         image: kukkalli/magma-mme:1.0.0
         container_name: "magma-mme"
-        hostname: "${MME_HOSTNAME}"  # mme
+        hostname: "${MME_HOSTNAME}"
         privileged: true
         depends_on: [redis]
         ports:
-            - "2123:2123/udp"
-            - "3870:3870/tcp"
-            - "5870:5870/tcp"
-            - "36412:36412/sctp"
+            - "${FABRIC_IP}:2123:2123/udp"
+            - "${FABRIC_IP}:3870:3870/tcp"
+            - "${FABRIC_IP}:5870:5870/tcp"
+            - "${FABRIC_IP}:36412:36412/sctp"
         networks:
             public_net:
                 ipv4_address: 192.168.68.149

@@ -1,6 +1,42 @@
 version: '3.8'
 
 services:
-  test:
-    image: something
+    oai_spgwc:
+        image: oai-spgwc:production
+        privileged: true
+        container_name: oai-spgwc
+        hostname: "${SPGW_C_HOSTNAME}"
+        networks:
+            public_net:
+                ipv4_address: 192.168.68.132
+        environment:
+            TZ: "${TZ}"
+            SGW_INTERFACE_NAME_FOR_S11: eth0
+            PGW_INTERFACE_NAME_FOR_SX: eth0
+            DEFAULT_DNS_IPV4_ADDRESS: 1.1.1.1
+            DEFAULT_DNS_SEC_IPV4_ADDRESS: 8.8.4.4
+            PUSH_PROTOCOL_OPTION: 'true'
+            APN_NI_1: tuckn.ipv4
+            APN_NI_2: tuckn2.ipv4
+            DEFAULT_APN_NI_1: tuckn.ipv4
+            UE_IP_ADDRESS_POOL_1: '12.1.1.2 - 12.1.1.254'
+            UE_IP_ADDRESS_POOL_2: '12.0.0.2 - 12.0.0.254'
+            UE_MTU_IPV4: 1500
+            MCC: "${MCC}"
+            MNC: "${MNC}"
+            MNC03: '001'
+            TAC: 1
+            GW_ID: "${GW_ID}"
+            REALM: "${REALM}"
+        healthcheck:
+            test: /bin/bash -c "pgrep oai_spgwc"
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
+networks:
+    public_net:
+        name: oai-public-net
+        ipam:
+            config:
+                - subnet: 192.168.68.128/26
