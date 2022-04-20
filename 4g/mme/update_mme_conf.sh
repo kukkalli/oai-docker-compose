@@ -26,7 +26,7 @@ MME_CONF[@MME_GID@]="${MME_GID}"
 MME_CONF[@MME_CODE@]="${MME_CODE}"
 MME_CONF[@SGWC_IP_ADDRESS@]="${SGWC_IP_ADDRESS}"
 
-cp mme.conf.tmplt mme_fd.conf
+cp mme.conf.tmplt mme.conf
 
 for K in "${!MME_CONF[@]}"; do
   echo "K in mme.conf is ${K}"
