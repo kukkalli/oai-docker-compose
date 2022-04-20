@@ -100,9 +100,9 @@ MME :
     NETWORK_INTERFACES :
     {
         MME_INTERFACE_NAME_FOR_S1_MME         = "eth0";
-        MME_IPV4_ADDRESS_FOR_S1_MME           = "192.168.61.149/24";
+        MME_IPV4_ADDRESS_FOR_S1_MME           = "192.168.68.149/24";
         MME_INTERFACE_NAME_FOR_S11_MME        = "eth0";
-        MME_IPV4_ADDRESS_FOR_S11_MME          = "192.168.61.149/24";
+        MME_IPV4_ADDRESS_FOR_S11_MME          = "192.168.68.149/24";
         MME_PORT_FOR_S11_MME                  = 2123;
     };
 
