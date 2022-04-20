@@ -68,8 +68,8 @@ services:
             cassandra_Server_IP: 192.168.68.130
             OP_KEY: 1006020f0a478bf6b699f15c062e42b3
             LTE_K: fec86ba6eb707ed08905757b1bb44b8f
-            APN1: oai.ipv4
-            APN2: oai2.ipv4
+            APN1: tuckn.ipv4
+            APN2: tuckn2.ipv4
             FIRST_IMSI: 222010100001120
             NB_USERS: 30
         healthcheck:
