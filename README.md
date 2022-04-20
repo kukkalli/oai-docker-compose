@@ -26,13 +26,13 @@ Docker compose files for OAI Core
 ### Build Docker HSS image:
 Build the HSS from :
 ```
-docker build --target oai-hss --tag oai-hss:production \
+docker build --network=host --target oai-hss --tag oai-hss:production \
                --file component/oai-hss/docker/Dockerfile.ubuntu18.04 \
                # The following line about proxy is certainly not needed in your env \
                --build-arg EURECOM_PROXY="http://proxy.eurecom.fr:8080" \
                component/oai-hss
 
-docker build --target oai-hss --tag oai-hss:latest \
+docker build --network=host --target oai-hss --tag oai-hss:latest \
                --file component/oai-hss/docker/Dockerfile.ubuntu18.04 \
                component/oai-hss
 
@@ -54,4 +54,37 @@ Check MME logs
 ```
 docker exec -it magma-mme /bin/bash -c "tail -f /var/log/mme.log"
 ```
+
+
+### Build Docker SPGW-C image:
+Build the SPGW-C from :
+```
+docker build --network=host --target oai-spgwc --tag oai-spgwc:latest \
+               --file component/oai-spgwc/docker/Dockerfile.ubuntu18.04 \
+               # The following line about proxy is certainly not needed in your env \
+               --build-arg EURECOM_PROXY="http://proxy.eurecom.fr:8080" \
+               component/oai-spgwc
+
+docker build --network=host --target oai-spgwc --tag oai-spgwc:latest \
+               --file component/oai-spgwc/docker/Dockerfile.ubuntu18.04 \
+               component/oai-spgwc
+               
+docker build --network=host --target oai-spgwc --tag oai-spgwc:latest --file component/oai-spgwc/docker/Dockerfile.ubuntu18.04 component/oai-spgwc
+
+docker image prune --force
+
+docker image ls
+
+docker login -u kukkalli -p c3360058-8abf-4091-b178-d3d94bc18636
+docker image tag oai-spgwc kukkalli/oai-spgwc:latest
+docker image tag oai-spgwc kukkalli/oai-spgwc:v1.2.0
+docker image push kukkalli/oai-spgwc:latest
+docker image push kukkalli/oai-spgwc:v1.2.0
+```
+
+Check SPGW-C logs
+```
+docker exec -it oai-hss /bin/bash -c "tail -f /openair-hss/logs/hss.log"
+```
+
 

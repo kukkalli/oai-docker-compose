@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
     oai_spgwc:
-        image: oai-spgwc:production
+        image: kukkalli/oai-spgwc:v1.2.0
         container_name: oai-spgwc
         privileged: true
         hostname: "${SPGW_C_HOSTNAME}"
