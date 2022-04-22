@@ -6,6 +6,9 @@ services:
         container_name: oai-spgwc
         privileged: true
         hostname: "${SPGW_C_HOSTNAME}"
+        ports:
+            - "2123/udp"
+            - "8805/udp"
         networks:
             public_net:
                 ipv4_address: 192.168.68.132
