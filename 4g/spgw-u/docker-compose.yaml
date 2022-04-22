@@ -20,7 +20,7 @@ services:
             PGW_INTERFACE_NAME_FOR_SGI: eth0
             SGW_INTERFACE_NAME_FOR_SX: eth0
             SPGWC0_IP_ADDRESS: "${SGWC_IP_ADDRESS}"
-            NETWORK_UE_IP: '12.1.1.0/24'
+            NETWORK_UE_IP: "${NETWORK_UE_IP}"
             NETWORK_UE_NAT_OPTION: 'yes'
             MCC: "${MCC}"
             MNC: "${MNC}"
