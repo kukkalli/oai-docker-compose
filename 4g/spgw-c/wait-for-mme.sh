@@ -11,7 +11,7 @@ MME_IP="$1"
 
 while ! nc -z "$MME_IP" 3870; do
   echo "MME at IP $MME_IP not connected"
-  sleep 0.10 # wait for 1/10 of the second before check again
+  sleep 0.1 # wait for 1/10 of the second before check again
 done
 
 echo "MME launched"
