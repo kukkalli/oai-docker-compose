@@ -7,8 +7,8 @@ services:
         privileged: true
         hostname: "${SPGW_C_HOSTNAME}"
         ports:
-            - "2123/udp"
-            - "8805/udp"
+            - "${FABRIC_IP}:2123:2123/udp"
+            - "${FABRIC_IP}:8805:8805/udp"
         networks:
             public_net:
                 ipv4_address: 192.168.68.132
