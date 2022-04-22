@@ -57,7 +57,7 @@ docker exec -it magma-mme /bin/bash -c "tail -f /var/log/mme.log"
 
 
 ### Build Docker SPGW-C image:
-Build the SPGW-C from :
+Build the SPGW-C from:
 ```
 docker build --network=host --target oai-spgwc --tag oai-spgwc:latest \
                --file component/oai-spgwc/docker/Dockerfile.ubuntu18.04 \
@@ -88,3 +88,29 @@ docker exec -it oai-hss /bin/bash -c "tail -f /openair-hss/logs/hss.log"
 ```
 
 
+
+### Build Docker SPGW-U image:
+Build the SPGW-U from:
+```
+docker build --network=host --target oai-spgwu-tiny --tag oai-spgwu-tiny:latest \
+               --file component/oai-spgwu-tiny/docker/Dockerfile.ubuntu18.04 \
+               # The following line about proxy is certainly not needed in your env \
+               --build-arg EURECOM_PROXY="http://proxy.eurecom.fr:8080" \
+               component/oai-spgwu-tiny
+
+docker build --network=host --target oai-spgwu-tiny --tag oai-spgwu-tiny:latest \
+               --file component/oai-spgwu-tiny/docker/Dockerfile.ubuntu18.04 \
+               component/oai-spgwu-tiny
+
+docker build --network=host --target oai-spgwu-tiny --tag oai-spgwu-tiny:latest --file component/oai-spgwu-tiny/docker/Dockerfile.ubuntu18.04 component/oai-spgwu-tiny
+
+docker image prune --force
+
+docker image ls
+
+docker login -u kukkalli -p c3360058-8abf-4091-b178-d3d94bc18636
+docker image tag oai-spgwu-tiny kukkalli/oai-spgwu-tiny:latest
+docker image tag oai-spgwu-tiny kukkalli/oai-spgwu-tiny:v1.2.0
+docker image push kukkalli/oai-spgwu-tiny:latest
+docker image push kukkalli/oai-spgwu-tiny:v1.2.0
+```

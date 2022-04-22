@@ -19,9 +19,9 @@ services:
             DEFAULT_DNS_IPV4_ADDRESS: 1.1.1.1
             DEFAULT_DNS_SEC_IPV4_ADDRESS: 8.8.4.4
             PUSH_PROTOCOL_OPTION: 'true'
-            APN_NI_1: tuckn.ipv4
-            APN_NI_2: tuckn2.ipv4
-            DEFAULT_APN_NI_1: tuckn.ipv4
+            APN_NI_1: "${APN1}"
+            APN_NI_2: "${APN2}"
+            DEFAULT_APN_NI_1: "${APN1}"
             UE_IP_ADDRESS_POOL_1: '12.1.1.2 - 12.1.1.254'
             UE_IP_ADDRESS_POOL_2: '12.0.0.2 - 12.0.0.254'
             UE_MTU_IPV4: 1500
