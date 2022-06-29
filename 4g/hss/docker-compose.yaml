@@ -9,7 +9,6 @@ services:
             - "7000:7000"
             - "7001:7001"
             - "7199:7199"
-            - "9042:9042"
             - "9160:9160"
         networks:
             public_net:
@@ -62,6 +61,7 @@ services:
         ports:
             - "${FABRIC_IP}:3868:3868/tcp"
             - "${FABRIC_IP}:5868:5868/tcp"
+            - "${FABRIC_IP}:9042:9042/tcp"
             - "${FABRIC_IP}:9080:9080/tcp"
             - "${FABRIC_IP}:9081:9081/tcp"
             - "${FABRIC_IP}:9082:9082/tcp"
