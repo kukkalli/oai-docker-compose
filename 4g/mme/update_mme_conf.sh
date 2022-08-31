@@ -6,9 +6,10 @@ declare -A MME_CONF
 
 MY_REALM="${REALM}"
 
-echo "My Realm is: ${MY_REALM}"
-echo "HSS IP is: ${HSS_IP}"
-echo "MME FQDN is: ${MME_FQDN}"
+# shellcheck disable=SC2129
+echo "My Realm is: ${MY_REALM}" >>  $PREFIX/startup.log
+echo "HSS IP is: ${HSS_IP}" >>  $PREFIX/startup.log
+echo "MME FQDN is: ${MME_FQDN}" >>  $PREFIX/startup.log
 
 
 # pushd $PREFIX || exit
