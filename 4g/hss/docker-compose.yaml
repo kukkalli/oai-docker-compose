@@ -22,19 +22,19 @@ services:
             timeout: 5s
             retries: 5
 
-    cassandra_web:
-        image: delermando/docker-cassandra-web:v0.4.0
-        container_name: cassandra-web
-        hostname: cassandra-web
-        depends_on: [cassandra]
-        ports:
-            - "${MANAGEMENT_IP}:3000:3000"
-        networks:
-            public_net:
-                ipv4_address: 192.168.68.131
-        environment:
-            CASSANDRA_HOST_IP: 192.168.68.130
-            CASSANDRA_PORT: 9042
+#    cassandra_web:
+#        image: delermando/docker-cassandra-web:v0.4.0
+#        container_name: cassandra-web
+#        hostname: cassandra-web
+#        depends_on: [cassandra]
+#        ports:
+#            - "${MANAGEMENT_IP}:3000:3000"
+#        networks:
+#            public_net:
+#                ipv4_address: 192.168.68.131
+#        environment:
+#            CASSANDRA_HOST_IP: 192.168.68.130
+#            CASSANDRA_PORT: 9042
 
     db_init:
         image: cassandra:2.1
