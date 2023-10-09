@@ -401,4 +401,8 @@ COMMIT;
 
 EOF
 
+sed -i 's/\"/\\\"/g' oai_db.sql
+
+docker compose up -d
+
 exit 0
