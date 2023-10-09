@@ -13,7 +13,7 @@ cp oai_db.sql oai_db.sql.bkp
 
 # Display the env_var file
 # shellcheck disable=SC2129
-cat env_var >> startup.log
+cat env_var >> /home/ubuntu/startup.log
 
 # shellcheck disable=SC2129
 echo "Domain is: ${DOMAIN}" >>  startup.log
