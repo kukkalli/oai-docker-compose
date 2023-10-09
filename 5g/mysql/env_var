@@ -1,0 +1,5 @@
+export TZ=Europe/Berlin
+export MYSQL_DATABASE=oai_db
+export MYSQL_USER=oai_tuc
+export MYSQL_PASSWORD=oai_tuc
+export MYSQL_ROOT_PASSWORD=oai_tuc

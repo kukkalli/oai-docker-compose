@@ -1,0 +1,5 @@
+export DOMAIN=tu-chemnitz.de
+export WEBSMSD_PORT=80
+export SMS_PORT=8080
+export TELE_SRV=oai
+export SYSLOG_LEVEL=4

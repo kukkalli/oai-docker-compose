@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  oai-udr:
+    container_name: "oai-udr"
+    image: oaisoftwarealliance/oai-udr:v1.5.1
+    environment:
+      - TZ=Europe/Paris
+      - UDR_NAME=OAI_UDR
+      - UDR_INTERFACE_NAME_FOR_NUDR=eth0
+      - MYSQL_IPV4_ADDRESS=mysql
+      - MYSQL_USER=test
+      - MYSQL_PASS=test
+      - MYSQL_DB=oai_db
+      - WAIT_MYSQL=120
+      - USE_FQDN_DNS=yes
+      - REGISTER_NRF=yes
+      - NRF_IPV4_ADDRESS=192.168.70.130
+      - NRF_FQDN=oai-nrf
+    depends_on:
+      - mysql
+      - oai-nrf
+    networks:
+      public_net:
+          ipv4_address: 192.168.70.136

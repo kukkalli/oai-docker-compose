@@ -1,0 +1,2 @@
+export DOMAIN=tu-chemnitz.de
+export TZ=Europe/Berlin

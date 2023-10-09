@@ -1,0 +1,5 @@
+export MYSQL_IP=10.10.0.1
+export MYSQL_DATABASE=oai_db
+export MYSQL_USER=test
+export MYSQL_PASSWORD=test
+export MYSQL_ROOT_PASSWORD=linux
