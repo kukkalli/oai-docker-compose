@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Source the environment variables
+source /home/ubuntu/env_var
+
+# Turn off any running docker compose
+docker compose down
+
+# remove existing files
+sudo rm -f /home/ubuntu/startup.log
+sudo rm -f /home/ubuntu/users.conf
+mv /home/ubuntu/hosts .
+
+cat > /home/ubuntu/users.conf << EOF
+[${UE_ID_01}]
+fullname = ${UE_USER_01_FULLNAME}
+hassip = yes
+context = users
+host = dynamic
+transport = udp
+
+[${UE_ID_02}]
+fullname = ${UE_USER_02_FULLNAME}
+hassip = yes
+context = users
+host = dynamic
+transport = udp
+EOF
+
+docker compose up -d
+
+
+exit

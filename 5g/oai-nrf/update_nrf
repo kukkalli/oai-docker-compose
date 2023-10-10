@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Source the environment variables
+source /home/ubuntu/env_var
+
+# Turn off any running docker compose
+docker compose down
+
+# remove existing files
+sudo rm -f /home/ubuntu/startup.log
+mv /home/ubuntu/hosts .
+
+# Display the env_var file
+# shellcheck disable=SC2129
+cat /home/ubuntu/env_var >> /home/ubuntu/startup.log
+
+# shellcheck disable=SC2129
+echo "Domain is: ${DOMAIN}" >>  /home/ubuntu/startup.log
+echo "Hostname is: ${HOSTNAME}" >>  /home/ubuntu/startup.log
+echo "FQDN is: ${NRF_FQDN}" >>  /home/ubuntu/startup.log
+echo "" >>  /home/ubuntu/startup.log
+
+
+docker compose up -d
+
+exit

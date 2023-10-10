@@ -9,8 +9,10 @@ services:
       - "3306:3306"
       - "33060:33060"
     volumes:
+      - ./hosts:/etc/hosts
       - ./oai_db.sql:/docker-entrypoint-initdb.d/oai_db.sql
       - ./mysql-healthcheck.sh:/tmp/mysql-healthcheck.sh
+      - /mysql/data:/var/lib/mysql
     environment:
       - TZ=${TZ:-Europe/Berlin}
       - MYSQL_DATABASE=${MYSQL_DATABASE:-oai_db}
@@ -22,6 +24,3 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-#    networks:
-#      public_net:
-#        ipv4_address: 192.168.70.131

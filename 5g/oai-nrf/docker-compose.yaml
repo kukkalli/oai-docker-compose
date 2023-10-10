@@ -2,12 +2,15 @@ version: '3.8'
 
 services:
   oai-nrf:
-    image: oaisoftwarealliance/oai-nrf:develop
+    image: oaisoftwarealliance/oai-nrf:v1.5.1
     container_name: "oai-nrf"
     hostname: "oai-nrf"
     ports:
       - "80:80"
       - "9090:9090"
+    volumes:
+      - ./hosts:/etc/hosts
     environment:
       - TZ=${TZ:-Europe/Berlin}
+      - LOG_LEVEL=${LOG_LEVEL:-debug}
       - NRF_INTERFACE_NAME_FOR_SBI=eth0

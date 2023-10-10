@@ -1,2 +1,4 @@
 export DOMAIN=tu-chemnitz.de
 export TZ=Europe/Berlin
+export NRF_INTERFACE_NAME_FOR_SBI=eth0
+export LOG_LEVEL=debug
