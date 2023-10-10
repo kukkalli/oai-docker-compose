@@ -10,7 +10,6 @@ docker compose down
 sudo rm -f /home/ubuntu/startup.log
 sudo rm -r -f /home/ubuntu/oai_db.sql
 cp oai_db.sql oai_db.sql.bkp
-mv /home/ubuntu/hosts .
 
 # Display the env_var file
 # shellcheck disable=SC2129
