@@ -3,7 +3,7 @@ version: '3.8'
 services:
   oai-udr:
     container_name: "oai-udr"
-    image: oaisoftwarealliance/oai-udr:v1.5.1
+    image: ${IMAGE_NAME:-oaisoftwarealliance/oai-udr:v1.5.1}
     volumes:
       - ./hosts:/etc/hosts
       - ./config.yaml:/openair-udr/etc/config.yaml

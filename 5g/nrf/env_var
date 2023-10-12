@@ -1,3 +1,4 @@
+export IMAGE_NAME=oaisoftwarealliance/oai-nrf:v1.5.1
 export DOMAIN=tu-chemnitz.de
 export TZ=Europe/Berlin
 export NRF_INTERFACE_NAME_FOR_SBI=eth0

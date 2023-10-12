@@ -1,3 +1,4 @@
+export IMAGE_NAME=mysql:8.0
 export TZ=Europe/Berlin
 export MYSQL_DATABASE=oai_db
 export MYSQL_USER=oai_tuc

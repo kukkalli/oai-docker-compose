@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   ims:
-    image: kukkalli/asterisk-ims:1.0.0
+    image: ${IMAGE_NAME:-kukkalli/asterisk-ims:1.0.0}
     container_name: "asterisk-ims"
     hostname: "asterisk-ims"
     cap_add:

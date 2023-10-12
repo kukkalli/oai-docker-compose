@@ -1,7 +1,0 @@
-export MYSQL_IP=10.10.0.1
-export MYSQL_DATABASE=oai_db
-export MYSQL_USER=oai_tuc
-export MYSQL_PASSWORD=oai_tuc
-export MYSQL_ROOT_PASSWORD=linux
-export NRF_IPV4_ADDRESS=${NRF_IPV4_ADDRESS}
-export NRF_FQDN=${NRF_FQDN}
