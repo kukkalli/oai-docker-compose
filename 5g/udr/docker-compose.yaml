@@ -14,7 +14,7 @@ services:
       - MYSQL_IPV4_ADDRESS=${MYSQL_IPV4_ADDRESS:-mysql}
       - MYSQL_USER=${MYSQL_USER:-oai_tuc}
       - MYSQL_PASS=${MYSQL_PASSWORD:-oai_tuc}
-      - MYSQL_DB=${MYSQL_DATABASE:-oai_db}
+      - MYSQL_DB=${MYSQL_DB:-oai_db}
       - WAIT_MYSQL=120
       - USE_FQDN_DNS=yes
       - REGISTER_NRF=yes
