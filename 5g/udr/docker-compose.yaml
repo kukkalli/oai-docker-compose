@@ -2,8 +2,13 @@ version: '3.8'
 
 services:
   oai-udr:
-    container_name: "oai-udr"
     image: ${IMAGE_NAME:-oaisoftwarealliance/oai-udr:v1.5.1}
+    container_name: "oai-udr"
+    hostname: "oai-udr"
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "38412:38412/sctp"
     volumes:
       - ./hosts:/etc/hosts
       - ./config.yaml:/openair-udr/etc/config.yaml
