@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  oai-amf:
+    image: ${IMAGE_NAME:-oaisoftwarealliance/oai-amf:v1.5.1}
+    container_name: "oai-amf"
+    hostname: "oai-amf"
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "9090:9090"
+      - "38412:38412/sctp"
+    volumes:
+      - ./hosts:/etc/hosts
+      - ./amf.conf:/openair-amf/etc/amf.conf
+    environment:
+      - TZ=${TZ:-Europe/Berlin}
+      # PLMN informations
+      - MCC=${MCC_01:-001}
+      - MNC=${MNC_01:-01}
+      - REGION_ID=${AMF_REGION_ID_01:-128}
+      - AMF_SET_ID=${AMF_SET_ID_01:-1}
+      - SERVED_GUAMI_MCC_0=${MCC_01:-001}
+      - SERVED_GUAMI_MNC_0=${MNC_01:-01}
+      - SERVED_GUAMI_REGION_ID_0=${AMF_REGION_ID_01:-128}
+      - SERVED_GUAMI_AMF_SET_ID_0=${AMF_SET_ID_01:-1}
+      - PLMN_SUPPORT_MCC=${PLMN_SL_MCC:-001}
+      - PLMN_SUPPORT_MNC=${PLMN_SL_MNC:-01}
+      - PLMN_SUPPORT_TAC=${PLMN_SL_TAC:-0x0001}
+      # Slice 0 (1, 0xFFFFFF)
+      - SST_0=${NSSAI_SST_01:-1}
+      - AMF_INTERFACE_NAME_FOR_NGAP=${AMF_INTERFACE_NAME_FOR_NGAP:-eth0}
+      - AMF_INTERFACE_NAME_FOR_N11=${AMF_INTERFACE_NAME_FOR_SBI:-eth0}
+      # One single SMF instance
+      - SMF_INSTANCE_ID_0=${SMF_01_INSTANCE_ID:-1}
+      - SMF_FQDN_0=${SMF_01_FQDN:-oai-smf}
+      - SMF_IPV4_ADDR_0=${SMF_01_IPV4_ADDRESS:-10.11.2.117}
+      - SELECTED_0=${SMF_01_SELECTED:-true}
+      # Interaction with other NFs
+      - NF_REGISTRATION=${REGISTER_NRF:-yes}
+      - USE_FQDN_DNS=${USE_FQDN_DNS:-yes}
+      - EXTERNAL_AUSF=${EXTERNAL_AUSF:-yes}
+      # Algorithm choices
+      - CIPH_ALGO_LIST=["NEA0" , "NEA1" , "NEA2"]
+      - INT_ALGO_LIST=["NIA1" , "NIA2"]
+      # Other NF
+      - NRF_IPV4_ADDRESS=${NRF_IPV4_ADDRESS:-10.11.1.41}
+      - NRF_FQDN=${NRF_FQDN:-oai-nrf}
+      - AUSF_IPV4_ADDRESS=${AUSF_IPV4_ADDRESS:-10.11.1.48}
+      - AUSF_FQDN=${AUSF_FQDN:-oai-ausf}
+      - UDM_IPV4_ADDRESS=${UDM_IPV4_ADDRESS:-10.11.1.122}
+      - UDM_FQDN=${UDM_FQDN:-oai-udm}

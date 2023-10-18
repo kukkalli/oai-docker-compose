@@ -1,0 +1,67 @@
+export IMAGE_NAME=oaisoftwarealliance/oai-amf:v1.5.1
+export TZ=Europe/Berlin
+export AMF_NAME=OAI-AMF
+export LOG_LEVEL=debug
+export AMF_INTERFACE_NAME_FOR_NGAP=eth0
+export AMF_PORT_NGAP=38412
+export AMF_INTERFACE_NAME_FOR_SBI=eth0
+export AMF_PORT_SBI=80
+export AMF_API_VERSION_SBI=v1
+export AMF_HTTP2_PORT_SBI=8080
+
+export USE_FQDN_DNS=yes
+export REGISTER_NRF=yes
+export EXTERNAL_AUSF=yes
+
+# SMF Info
+export SMF_01_INSTANCE_ID=1
+export SMF_01_IPV4_ADDRESS=10.11.2.117
+export SMF_01_PORT=80
+export SMF_01_HTTP2_PORT=8080
+export SMF_01_VERSION=v1
+export SMF_01_FQDN=oai-smf
+export SMF_01_SELECTED=true
+
+# NRF Info
+export NRF_IPV4_ADDRESS=10.11.1.41
+export NRF_PORT=80
+export NRF_API_VERSION=v1
+export NRF_FQDN=oai-nrf
+
+# AUSF Info
+export AUSF_IPV4_ADDRESS=10.11.1.48
+export AUSF_PORT=80
+export AUSF_API_VERSION=v1
+export AUSF_FQDN=oai-ausf
+
+# UDM Info
+export UDM_IPV4_ADDRESS=10.11.1.122
+export UDM_PORT=80
+export UDM_API_VERSION=v1
+export UDM_FQDN=oai-udm
+
+# MySQL Info
+export MYSQL_SERVER=mysql
+export MYSQL_IPV4_ADDRESS=10.11.2.160
+export MYSQL_USER=oai_tuc
+export MYSQL_PASS=oai_tuc
+export MYSQL_DB=oai_db
+
+export DOMAIN="tu-chemnitz.de"
+
+# PLMN list 01
+export MCC_01=208
+export MNC_01=95
+export AMF_REGION_ID_01=128
+export AMF_SET_ID_01=1
+export AMF_POINTER_01=1
+
+# PLMN Support List
+export PLMN_SL_MCC=208
+export PLMN_SL_MNC=95
+export PLMN_SL_TAC=0xa000
+#export PLMN_SL_TAC=0x0001
+
+# NSSAI Set 01
+export NSSAI_SST_01=1
+

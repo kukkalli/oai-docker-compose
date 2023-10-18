@@ -1,20 +1,21 @@
 #!/bin/bash
 
 # Source the environment variables
-source /home/ubuntu/env_var
+# shellcheck disable=SC2046
+source $(pwd)/env_var
 
 # Turn off any running docker compose
 docker compose down
 
 # remove existing files
-sudo rm -f /home/ubuntu/startup.log
-sudo rm -r -f /home/ubuntu/config.yaml
+sudo rm -f startup.log
+sudo rm -f config.yaml
 
 # Display the env_var file
-cat /home/ubuntu/env_var >> /home/ubuntu/startup.log
+cat env_var >> startup.log
 
 # shellcheck disable=SC2129
-cat > /home/ubuntu/config.yaml << EOF
+cat > $(pwd)/amf.conf << EOF
 ################################################################################
 # Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -36,219 +37,144 @@ cat > /home/ubuntu/config.yaml << EOF
 #      contact@openairinterface.org
 ################################################################################
 
-# OAI CN Configuration File
-### This file can be used by all OAI NFs
-### Some fields are specific to an NF and will be ignored by other NFs
+#### This file is a jinja2 template all the values between double curly brace will be replaced with environment variables
 
-############# Common configuration
+AMF =
+{
+  INSTANCE_ID = 0 ;            # 0 is the default
+  PID_DIRECTORY = "/var/run";   # /var/run is the default
 
-# Log level for all the NFs
-log_level:
-  general: debug
+  AMF_NAME = "${AMF_NAME}";
+  LOG_LEVEL = "${LOG_LEVEL}";
 
-# If you enable registration, the other NFs will use the NRF discovery mechanism
-register_nf:
-  general: yes
+  RELATIVE_CAPACITY = 30;
+  # Display statistics about whole system (in seconds)
+  STATISTICS_TIMER_INTERVAL = 20;
 
-http_version: 2
+  CORE_CONFIGURATION:
+  {
+    EMERGENCY_SUPPORT = "false";
+  };
 
-############## SBI Interfaces
-### Each NF takes its local SBI interfaces and remote interfaces from here, unless it gets them using NRF discovery mechanisms
-nfs:
-  amf:
-    host: oai-amf
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
-    n2:
-      interface_name: eth0
-      port: 38412
-  smf:
-    host: oai-smf
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
-    n4:
-      interface_name: eth0
-      port: 8805
-  udm:
-    host: oai-udm
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
-  udr:
-    host: oai-udr
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
-  ausf:
-    host: oai-ausf
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
-  nrf:
-    host: oai-nrf
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
-  pcf:
-    host: oai-pcf
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
-  nssf:
-    host: oai-nssf
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
+  GUAMI:
+  {
+    MCC = "${MCC_01}"; MNC = "${MNC_01}"; RegionID = "${AMF_REGION_ID_01}"; AMFSetID = "${AMF_SET_ID_01}"; AMFPointer = "${AMF_POINTER_01}"
+  }
 
-#### Common for UDR and AMF
-database:
-  host: mysql
-  type: mysql
-  user: ${MYSQL_USER}"
-  password: ${MYSQL_PASSWORD}"
-  database_name: ${MYSQL_DATABASE}"
-  generate_random: true
-  connection_timeout: 300 # seconds
+  SERVED_GUAMI_LIST = (
+    {MCC = "${MCC_01}"; MNC = "${MNC_01}"; RegionID = "${AMF_REGION_ID_01}"; AMFSetID = "${AMF_SET_ID_01}"; AMFPointer = "${AMF_POINTER_01}"}
+    #48bits <MCC><MNC><RegionID><AMFSetID><AMFPointer>
+  );
 
-############## NF-specific configuration
-amf:
-  pid_directory: "/var/run"
-  amf_name: "OAI-AMF"
-  # This really depends on if we want to keep the "mini" version or not
-  support_features_options:
-    enable_simple_scenario: no
-    enable_nssf: no
-    enable_smf_selection: yes
-    use_external_udm: no
-  relative_capacity: 30
-  statistics_timer_interval: 20  #in seconds
-  emergency_support: false
-  served_guami_list:
-# PLMN list 01
-    - mcc: ${MCC_01}
-      mnc: ${MNC_01}
-      amf_region_id: ${AMF_REGION_ID_01}
-      amf_set_id: ${AMF_SET_ID_01}
-      amf_pointer: ${AMF_POINTER_01}
-# PLMN list 02
-    - mcc: ${MCC_02}
-      mnc: ${MNC_02}
-      amf_region_id: ${AMF_REGION_ID_02}
-      amf_set_id: ${AMF_SET_ID_02}
-      amf_pointer: ${AMF_POINTER_02}
-# PLMN Support List
-  plmn_support_list:
-    - mcc: ${PLMN_SL_MCC}
-      mnc: ${PLMN_SL_MNC}
-      tac: ${PLMN_SL_TAC}
-# NSSAI Values
-      nssai:
-# NSSAI Set 01
-        - sst: 1
-# NSSAI Set 02
-        - sst: 1
-          sd: 1
-# NSSAI Set 03
-        - sst: 222
-          sd: 123
+  PLMN_SUPPORT_LIST = ({
+    MCC = "${PLMN_SL_MCC}"; MNC = "${PLMN_SL_MNC}"; TAC = ${PLMN_SL_TAC};
+    SLICE_SUPPORT_LIST = (
+      {SST = ${NSSAI_SST_01}; SD = "0xFFFFFF"}
+     )
+  });
 
-  supported_integrity_algorithms:
-    - "NIA0"
-    - "NIA1"
-    - "NIA2"
-  supported_encryption_algorithms:
-    - "NEA0"
-    - "NEA1"
-    - "NEA2"
+  INTERFACES:
+  {
+    # AMF binded interface for N1/N2 interface (NGAP)
+    NGAP_AMF:
+    {
+      INTERFACE_NAME = "${AMF_INTERFACE_NAME_FOR_NGAP}";
+      IPV4_ADDRESS   = "read";
+      PORT           = ${AMF_PORT_NGAP};
+      PPID           = 60;
+    };
 
-smf:
-  ue_mtu: 1500
-  support_features:
-    use_local_subscription_info: yes # Use infos from local_subscription_info or from UDM
-    use_local_pcc_rules: yes # Use infos from local_pcc_rules or from PCF
-  # we resolve from NRF, this is just to configure usage_reporting
-  upfs:
-    - host: oai-spgwu
-      config:
-        enable_usage_reporting: no
-  ue_dns:
-    primary_ipv4: "1.1.1.1"
-    primary_ipv6: "2001:4860:4860::8888"
-    secondary_ipv4: "8.8.8.8"
-    secondary_ipv6: "2001:4860:4860::8888"
-  ims:
-    pcscf_ipv4: "${IMS_IPV4}"
-    pcscf_ipv6: "fe80::7915:f408:1787:db8b"
+    # AMF binded interface for SBI (N11 (SMF)/N12 (AUSF), etc.)
+    SBI:
+    {
+      INTERFACE_NAME = "${AMF_INTERFACE_NAME_FOR_SBI}";
+      IPV4_ADDRESS   = "read";
+      # default is 80
+      PORT           = ${AMF_PORT_SBI};
+      # default is v1
+      API_VERSION    = "${AMF_API_VERSION_SBI}";
+      # default is 8080
+      HTTP2_PORT     = ${AMF_HTTP2_PORT_SBI};
 
-  # the DNN you configure here should be configured in "dnns"
-  local_subscription_infos:
-    # DNN 01
-    - single_nssai:
-        sst: 1
-      dnn: "oai"
-      qos_profile:
-        5qi: 9
-        session_ambr_ul: "200Mbps"
-        session_ambr_dl: "400Mbps"
+      SMF_INSTANCES_POOL = (
+        {SMF_INSTANCE_ID = ${SMF_01_INSTANCE_ID}; IPV4_ADDRESS = "${SMF_01_IPV4_ADDRESS}"; PORT = "${SMF_01_PORT}"; HTTP2_PORT = ${SMF_01_HTTP2_PORT}, VERSION = "${SMF_01_VERSION}"; FQDN = "${SMF_01_FQDN}", SELECTED = "${SMF_01_SELECTED}"}
+      );
+    };
 
-    # DNN 02
-    - single_nssai:
-        sst: 1
-        sd: 1
-      dnn: "oai.ipv4"
-      qos_profile:
-        5qi: 9
-        session_ambr_ul: "100Mbps"
-        session_ambr_dl: "200Mbps"
+    NRF :
+    {
+      IPV4_ADDRESS = "${NRF_IPV4_ADDRESS}";
+      PORT         = ${NRF_PORT};            # Default: 80
+      API_VERSION  = "${NRF_API_VERSION}";
+      FQDN         = "${NRF_FQDN}"
+    };
 
-    # Default DNN
-    - single_nssai:
-        sst: 222
-        sd: 123
-      dnn: "default"
-      qos_profile:
-        5qi: 9
-        session_ambr_ul: "50Mbps"
-        session_ambr_dl: "100Mbps"
+    AUSF :
+    {
+      IPV4_ADDRESS = "${AUSF_IPV4_ADDRESS}";
+      PORT         = ${AUSF_PORT};            # Default: 80
+      API_VERSION  = "${AUSF_API_VERSION}";
+      FQDN         = "${AUSF_FQDN}"
+    };
 
-## DNN configuration
-dnns:
-  - dnn: "${DNN_01_DNN}"
-    pdu_session_type: "IPV4"
-    ipv4_pool: "12.1.1.151 - 12.1.1.253"
-  - dnn: "${DNN_02_DNN}"
-    pdu_session_type: "IPV4"
-    ipv4_pool: "12.1.1.51 - 12.1.1.150"
-  - dnn: "${DNN_DEF_DNN}"
-    pdu_session_type: "IPV4"
-    ipv4_pool: "12.1.1.2 - 12.1.1.50"
-  - dnn: "ims"
-    pdu_session_type: "IPV4V6"
-    ipv4_pool: "14.1.1.2 - 14.1.1.253"
+    UDM :
+    {
+      IPV4_ADDRESS = "${UDM_IPV4_ADDRESS}";
+      PORT         = ${UDM_PORT};    # Default: 80
+      API_VERSION  = "${UDM_API_VERSION}";
+      FQDN         = "${UDM_FQDN}"
+    };
 
-pcf:
-  local_policy:
-    policy_decisions_path: /openair-pcf/policies/policy_decisions
-    pcc_rules_path: /openair-pcf/policies/pcc_rules
-    traffic_rules_path: /openair-pcf/policies/traffic_rules
+    NSSF :
+    {
+      IPV4_ADDRESS = "0.0.0.0";
+      PORT         = 80;            # Default: 80
+      API_VERSION  = "v2";
+      FQDN         = "oai-nssf"
+    };
 
-nssf:
-  slice_config_path: /openair-nssf/etc/nssf_slice_config.yaml
+  };
 
-udr:
-  udr_name: oai-udr
+  SUPPORT_FEATURES:
+  {
+     # STRING, {"yes", "no"},
+     NF_REGISTRATION = "yes";  # Set to yes if AMF registers to an NRF
+     NRF_SELECTION   = "no";    # Set to yes to enable NRF discovery and selection
+     EXTERNAL_NRF    = "no";     # Set to yes if AMF works with an external NRF
+     SMF_SELECTION   = "no";    # Set to yes to enable SMF discovery and selection
+     EXTERNAL_AUSF   = "yes";    # Set to yes if AMF works with an external AUSF
+     EXTERNAL_UDM    = "no";     # Set to yes if AMF works with an external UDM
+     EXTERNAL_NSSF   = "no";    # Set to yes if AMF works with an external NSSF
+     USE_FQDN_DNS    = "yes";   # Set to yes if AMF relies on a DNS to resolve NRF/SMF/UDM/AUSF's FQDN
+     USE_HTTP2       = "no";        # Set to yes to enable HTTP2 for AMF server
+  }
 
+  AUTHENTICATION:
+  {
+    ## MySQL mandatory options
+    MYSQL_server = "${MYSQL_SERVER}"; # MySQL Server address
+    MYSQL_user   = "${MYSQL_USER}";   # Database server login
+    MYSQL_pass   = "${MYSQL_PASS}";   # Database server password
+    MYSQL_db     = "${MYSQL_DB}";     # Your database name
+    RANDOM = "true";
+  };
+
+  NAS:
+  {
+    ORDERED_SUPPORTED_INTEGRITY_ALGORITHM_LIST = ["NIA1" , "NIA2"] ;
+    ORDERED_SUPPORTED_CIPHERING_ALGORITHM_LIST = ["NEA0" , "NEA1" , "NEA2"] ;
+  };
+};
 EOF
+
+# shellcheck disable=SC2035
+# shellcheck disable=SC2046
+sudo chown ubuntu:ubuntu $(pwd)/*
+
+# Pull the docker image
+docker pull "${IMAGE_NAME}"
+
+./wait_for_dependencies
 
 docker compose up -d
 

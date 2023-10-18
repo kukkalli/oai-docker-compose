@@ -35,6 +35,7 @@ export AMF_POINTER_02=1
 export PLMN_SL_MCC=208
 export PLMN_SL_MNC=95
 export PLMN_SL_TAC=0xa000
+#export PLMN_SL_TAC=0x0001
 
 # NSSAI Set 01
 export NSSAI_SST_01=1
