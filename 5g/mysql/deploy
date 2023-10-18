@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Source the environment variables
-source env_var
+# shellcheck disable=SC2046
+source $(pwd)/env_var
 
 # Turn off any running docker compose
 docker compose down
@@ -13,7 +14,7 @@ cp oai_db.sql oai_db.sql.bkp
 
 # Display the env_var file
 # shellcheck disable=SC2129
-cat env_var >> /home/ubuntu/startup.log
+cat $(pwd)/env_var >> /home/ubuntu/startup.log
 
 # shellcheck disable=SC2129
 echo "Domain is: ${DOMAIN}" >>  startup.log
@@ -207,6 +208,7 @@ CREATE TABLE \`AuthenticationSubscription\` (
 
 EOF
 
+# shellcheck disable=SC2129
 echo -e "INSERT INTO \`AuthenticationSubscription\` (\`ueid\`, \`authenticationMethod\`, \`encPermanentKey\`, \`protectionParameterId\`, \`sequenceNumber\`, \`authenticationManagementField\`, \`algorithmId\`,
     \`encOpcKey\`, \`encTopcKey\`, \`vectorGenerationInHss\`, \`n5gcAuthMethod\`, \`rgAuthenticationInd\`, \`supi\`) VALUES ('${UE_ID}', '5G_AKA', '${ENC_PERMANENT_KEY}',
     '${PROTECTION_PARAMETER_ID}', '{\"sqn\": \"000000000000\", \"sqnScheme\": \"NON_TIME_BASED\", \"lastIndexes\": {\"ausf\": 0}}', '8000', 'milenage',

@@ -1,18 +1,18 @@
 #!/bin/bash
 
 # Source the environment variables
-source env_var
+# shellcheck disable=SC2046
+source $(pwd)/env_var
 
 # Turn off any running docker compose
 docker compose down
 
 # remove existing files
 sudo rm -f /home/ubuntu/startup.log
-mv /home/ubuntu/hosts .
 
 # Display the env_var file
 # shellcheck disable=SC2129
-cat /home/ubuntu/env_var >> /home/ubuntu/startup.log
+cat $(pwd)/env_var >> /home/ubuntu/startup.log
 
 # shellcheck disable=SC2129
 echo "Domain is: ${DOMAIN}" >>  /home/ubuntu/startup.log
