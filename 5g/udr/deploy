@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # Source the environment variables
-source /home/ubuntu/env_var
+source env_var
 
 # Turn off any running docker compose
 docker compose down
 
 # remove existing files
-sudo rm -f /home/ubuntu/startup.log
-sudo rm -r -f /home/ubuntu/config.yaml
+sudo rm -f startup.log
+sudo rm -f config.yaml
 
 # Display the env_var file
-cat /home/ubuntu/env_var >> /home/ubuntu/startup.log
+cat env_var >> startup.log
 
 # shellcheck disable=SC2129
 cat > /home/ubuntu/config.yaml << EOF
@@ -112,13 +112,13 @@ nfs:
 
 #### Common for UDR and AMF
 database:
-  host: mysql
+  host: ${MYSQL_SERVER}
   type: mysql
   user: ${MYSQL_USER}"
   password: ${MYSQL_PASSWORD}"
-  database_name: ${MYSQL_DATABASE}"
+  database_name: ${MYSQL_DB}"
   generate_random: true
-  connection_timeout: 300 # seconds
+  connection_timeout: ${DB_CONNECTION_TIMEOUT} # seconds
 
 ############## NF-specific configuration
 amf:
@@ -249,6 +249,11 @@ udr:
   udr_name: oai-udr
 
 EOF
+
+# Pull the docker image
+docker pull "${IMAGE_NAME}"
+
+./wait_for_dependencies
 
 docker compose up -d
 

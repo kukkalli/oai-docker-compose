@@ -28,6 +28,9 @@ host = dynamic
 transport = udp
 EOF
 
+# Pull the docker image
+docker pull "${IMAGE_NAME}"
+
 docker compose up -d
 
 

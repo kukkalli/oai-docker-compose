@@ -408,6 +408,9 @@ sed -i 's/SET time_zone = \\\"+00:00\\\"/SET time_zone = \"+00:00\"/' oai_db.sql
 
 sed -i 's/\\\\\"/\\\"/g' oai_db.sql
 
+# Pull the docker image
+docker pull "${IMAGE_NAME}"
+
 docker compose up -d
 
 exit 0

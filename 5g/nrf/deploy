@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Source the environment variables
-source /home/ubuntu/env_var
+source env_var
 
 # Turn off any running docker compose
 docker compose down
@@ -20,6 +20,8 @@ echo "Hostname is: ${HOSTNAME}" >>  /home/ubuntu/startup.log
 echo "FQDN is: ${NRF_FQDN}" >>  /home/ubuntu/startup.log
 echo "" >>  /home/ubuntu/startup.log
 
+# Pull the docker image
+docker pull "${IMAGE_NAME}"
 
 docker compose up -d
 
