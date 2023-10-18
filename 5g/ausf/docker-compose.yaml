@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  oai-ausf:
+    image: ${IMAGE_NAME:-oaisoftwarealliance/oai-ausf:develop}
+    container_name: "oai-ausf"
+    hostname: "oai-ausf"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - ./hosts:/etc/hosts
+    environment:
+      - TZ=${TZ:-Europe/Berlin}
+      - AUSF_NAME=${AUSF_NAME:-OAI_AUSF}
+      - SBI_IF_NAME=${SBI_IF_NAME:-eth0}
+      - USE_FQDN_DNS=${USE_FQDN_DNS:-yes}
+      - REGISTER_NRF=${REGISTER_NRF:-yes}
+      - UDM_IP_ADDRESS=${UDM_IPV4_ADDRESS:-10.11.1.122}
+      - UDM_FQDN=${UDM_FQDN:-oai-udm}
+      - NRF_IPV4_ADDRESS=${NRF_IPV4_ADDRESS:-10.11.1.41}
+      - NRF_FQDN=${NRF_FQDN:-oai-nrf}
