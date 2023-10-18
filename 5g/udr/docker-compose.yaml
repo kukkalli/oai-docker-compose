@@ -11,7 +11,7 @@ services:
       - TZ=Europe/Paris
       - UDR_NAME=OAI_UDR
       - UDR_INTERFACE_NAME_FOR_NUDR=eth0
-      - MYSQL_IPV4_ADDRESS=${MYSQL_IP:-mysql}
+      - MYSQL_IPV4_ADDRESS=${MYSQL_IPV4_ADDRESS:-mysql}
       - MYSQL_USER=${MYSQL_USER:-oai_tuc}
       - MYSQL_PASS=${MYSQL_PASSWORD:-oai_tuc}
       - MYSQL_DB=${MYSQL_DATABASE:-oai_db}
@@ -23,6 +23,6 @@ services:
 #    depends_on:
 #      - mysql
 #      - oai-nrf
-    networks:
-      public_net:
-          ipv4_address: 192.168.70.136
+#    networks:
+#      public_net:
+#          ipv4_address: 192.168.70.136
