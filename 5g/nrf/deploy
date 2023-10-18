@@ -20,6 +20,10 @@ echo "Hostname is: ${HOSTNAME}" >>  /home/ubuntu/startup.log
 echo "FQDN is: ${NRF_FQDN}" >>  /home/ubuntu/startup.log
 echo "" >>  /home/ubuntu/startup.log
 
+# shellcheck disable=SC2035
+# shellcheck disable=SC2046
+sudo chown ubuntu:ubuntu $(pwd)/*
+
 # Pull the docker image
 docker pull "${IMAGE_NAME}"
 
