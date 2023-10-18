@@ -1,81 +1,12 @@
-export IMAGE_NAME=oaisoftwarealliance/oai-udr:v1.5.1
-export TZ=Europe/Berlin
-export UDR_NAME=OAI_UDR
-export UDR_INTERFACE_NAME_FOR_NUDR=eth0
-export MYSQL_SERVER=mysql
-export MYSQL_IPV4_ADDRESS=10.11.2.160
-export MYSQL_USER=oai_tuc
-export MYSQL_PASS=oai_tuc
-export MYSQL_DB=oai_db
-export DB_CONNECTION_TIMEOUT=300
-export WAIT_MYSQL=120
-export USE_FQDN_DNS=yes
-export REGISTER_NRF=yes
-export NRF_HOSTNAME=oai-nrf
-export NRF_IPV4_ADDRESS=10.11.1.41
-export NRF_FQDN=oai-nrf
-
 export DOMAIN="tu-chemnitz.de"
 
-# PLMN list 01
-export MCC_01=208
-export MNC_01=95
-export AMF_REGION_ID_01=128
-export AMF_SET_ID_01=1
-export AMF_POINTER_01=1
-
-# PLMN list 02
-export MCC_02=460
-export MNC_02=11
-export AMF_REGION_ID_02=10
-export AMF_SET_ID_02=1
-export AMF_POINTER_02=1
-
-# PLMN Support List
-export PLMN_SL_MCC=208
-export PLMN_SL_MNC=95
-export PLMN_SL_TAC=0xa000
-
-# NSSAI Set 01
-export NSSAI_SST_01=1
-# NSSAI Set 02
-export NSSAI_SST_02=1
-export NSSAI_SD_02=1
-# NSSAI Set 03
-export NSSAI_SST_03=222
-export NSSAI_SD_03=123
-
-# IMS IPv4
-export IMS_IPV4="10.11.1.118"
-
-# DNN List
-# DNN 01
-export DNN_01_SST=1
-export DNN_01_DNN="oai"
-export DNN_01_5QI=9
-export DNN_01_SESSION_AMBR_UL="200Mbps"
-export DNN_01_SESSION_AMBR_DL="400Mbps"
-export DNN_01_PDU_SESSION_TYPE=IPV4
-
-# DNN 02
-export DNN_02_SST=1
-export DNN_02_SD=1
-export DNN_02_DNN="oai.ipv4"
-export DNN_02_5QI=9
-export DNN_02_SESSION_AMBR_UL="100Mbps"
-export DNN_02_SESSION_AMBR_DL="200Mbps"
-export DNN_02_PDU_SESSION_TYPE=IPV4
-
-# Default DNN
-export DNN_DEF_SST=222
-export DNN_DEF_SD=123
-export DNN_DEF_DNN="default"
-export DNN_DEF_5QI=9
-export DNN_DEF_SESSION_AMBR_UL="50Mbps"
-export DNN_DEF_SESSION_AMBR_Dl="100Mbps"
-export DNN_DEF_PDU_SESSION_TYPE=IPV4
-
-# IMS DNN
-export DNN_IMS="ims"
-export DNN_IMS_PDU_SESSION_TYPE=IPV4V6
-
+export IMAGE_NAME=oaisoftwarealliance/oai-udm:develop
+export TZ=Europe/Berlin
+export UDM_NAME=OAI_UDM
+export SBI_IF_NAME=eth0
+export REGISTER_NRF=yes
+export USE_FQDN_DNS=yes
+export UDR_IPV4_ADDRESS=10.11.2.223
+export UDR_FQDN=oai-udr
+export NRF_IPV4_ADDRESS=10.11.1.41
+export NRF_FQDN=oai-nrf

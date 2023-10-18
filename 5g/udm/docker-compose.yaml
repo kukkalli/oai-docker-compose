@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  oai-udm:
+    image: ${IMAGE_NAME:-oaisoftwarealliance/oai-udm:develop}
+    container_name: "oai-udm"
+    hostname: "oai-udm"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - ./hosts:/etc/hosts
+    environment:
+      - TZ=${TZ:-Europe/Berlin}
+      - UDM_NAME=${UDM_NAME:-OAI_UDM}
+      - SBI_IF_NAME=${SBI_IF_NAME:-eth0}
+      - REGISTER_NRF=${REGISTER_NRF:-yes}
+      - USE_FQDN_DNS=${USE_FQDN_DNS:-yes}
+      - UDR_IP_ADDRESS=${UDR_IPV4_ADDRESS:-10.11.2.223}
+      - UDR_FQDN=${UDR_FQDN:-"oai-udr"}
+      - NRF_IPV4_ADDRESS=${NRF_IPV4_ADDRESS:-10.11.1.41}
+      - NRF_FQDN=${NRF_FQDN:-"oai-nrf"}
