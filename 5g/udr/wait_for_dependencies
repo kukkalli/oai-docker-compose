@@ -1,10 +1,12 @@
 #!/bin/sh
 
-. env_var
+# shellcheck disable=SC2046
+# shellcheck disable=SC2039
+source $(pwd)/env_var
+. $(pwd)/env_var
 
 set -e
 echo "Waiting for MySQL at IP: ${MYSQL_IPV4_ADDRESS} to launch on 3306..."
-# MYSQL_IP="$1"
 
 while ! nc -z "${MYSQL_IPV4_ADDRESS}" 3306; do
   echo "MYSQL at IP ${MYSQL_IPV4_ADDRESS} not connected"
@@ -14,10 +16,9 @@ done
 echo "MYSQL launched"
 
 set -e
-echo "Waiting for NRF at IP: ${NRF_IPV4_ADDRESS} to launch on 8080..."
-# NRF_IP="$2"
+echo "Waiting for NRF at IP: ${NRF_IPV4_ADDRESS} to launch on 80..."
 
-while ! nc -z "${NRF_IPV4_ADDRESS}" 8080; do
+while ! nc -z "${NRF_IPV4_ADDRESS}" 80; do
   echo "NRF at IP ${NRF_IPV4_ADDRESS} not connected"
   sleep 0.1 # wait for 1/10 of the second before check again
 done

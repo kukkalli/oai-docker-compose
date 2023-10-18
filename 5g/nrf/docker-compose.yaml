@@ -7,6 +7,7 @@ services:
     hostname: "oai-nrf"
     ports:
       - "80:80"
+      - "8080:8080"
       - "9090:9090"
     volumes:
       - ./hosts:/etc/hosts
