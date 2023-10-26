@@ -26,17 +26,15 @@ services:
       - NRF_IPV4_ADDRESS=${NRF_IPV4_ADDRESS:-"10.11.1.41"}
       - NRF_FQDN=${NRF_FQDN:-"oai-nrf"}
       # Slice 0 (1, 0xFFFFFF)
-      - NSSAI_SST_0=${NSSAI_SST_01:-1}
-      - NSSAI_SD_0=${NSSAI_SD_01:-"0xFFFFFF"}
-      - DNN_0=${DNN_01:-oai}
+      - NSSAI_SST_0=1
+      - NSSAI_SD_0="0xFFFFFF"
+      - DNN_0=oai
       # Slice 1 (1, 0xFFFFFF)
-      - NSSAI_SST_1=${NSSAI_SST_02:-1}
-      - NSSAI_SD_1=${NSSAI_SD_02:-"0xFFFFFF"}
-      - DNN_1=${DNN_02:-openairinterface}
+      - NSSAI_SST_1=1
+      - DNN_1=openairinterface
       # Slice 2 (1, 0xFFFFFF)
-      - NSSAI_SST_2=${NSSAI_SST_03:-1}
-      - NSSAI_SD_2=${NSSAI_SD_03:-"0xFFFFFF"}
-      - DNN_2=${DNN_03:-ims}
+      - NSSAI_SST_2=1
+      - DNN_2=ims
 #    depends_on:
 #      - oai-nrf
 #      - oai-smf

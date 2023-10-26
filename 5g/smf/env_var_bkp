@@ -6,7 +6,7 @@ export SMF_PORT_FOR_SBI=80
 export SMF_HTTP2_PORT_FOR_SBI=8080
 export SMF_API_VERSION_FOR_SBI=v1
 export AMF_PORT=80
-export AMF_API_VERSION=${AMF_API_VERSION:-v1}
+export AMF_API_VERSION=v1
 
 # Session Management Subscription List 01
 export SM_01_NSSAI_SST=1,

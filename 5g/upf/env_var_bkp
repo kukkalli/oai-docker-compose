@@ -1,0 +1,20 @@
+export IMAGE_NAME=oaisoftwarealliance/oai-spgwu-tiny:v1.5.1
+export TZ=Europe/Berlin
+export UPF_FQDN=oai-spgwu-tiny
+export UPF_FQDN_5G=${UPF_FQDN_5G:-oai-spgwu-tiny}
+export NRF_IPV4_ADDRESS=${NRF_IPV4_ADDRESS:-"10.11.1.41"}
+export NRF_FQDN=${NRF_FQDN:-"oai-nrf"}
+
+# NSSAI Set 01
+export NSSAI_SST_01=1
+export NSSAI_SD_01="0xFFFFFF"
+export DNN_01=oai
+# NSSAI Set 02
+export NSSAI_SST_02=1
+export NSSAI_SD_02="0xFFFFFF"
+export DNN_02=openairinterface
+# NSSAI Set 03
+export NSSAI_SST_03=1
+export NSSAI_SD_03="0xFFFFFF"
+export DNN_03=ims
+

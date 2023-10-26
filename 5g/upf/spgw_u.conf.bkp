@@ -1,22 +1,3 @@
-#!/bin/bash
-
-# Source the environment variables
-# shellcheck disable=SC2046
-source $(pwd)/env_var
-
-# Turn off any running docker compose
-docker compose down
-
-# remove existing files
-sudo rm -f startup.log
-sudo rm -f config.yaml
-
-# Display the env_var file
-cat env_var >> startup.log
-
-# shellcheck disable=SC2129
-# shellcheck disable=SC2046
-cat > $(pwd)/spgw_u.conf << EOF
 ################################################################################
 # Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -40,7 +21,7 @@ cat > $(pwd)/spgw_u.conf << EOF
 SPGW-U =
 {
     # FQDN for 4G
-    FQDN = "${UPF_FQDN}";
+    FQDN = "oai-spgwu-tiny";
     #"gw.spgw.node.epc.mnc.mcc.";
     # 0 is the default
     INSTANCE      = 0;
@@ -151,11 +132,11 @@ SPGW-U =
        # Set to 'yes' if UPF relies on a DNS/FQDN service to resolve NRF's FQDN
        USE_FQDN_NRF       = "yes";
        # Set FQDN of UPF
-       UPF_FQDN_5G        = "${UPF_FQDN}";
+       UPF_FQDN_5G        = "oai-spgwu-tiny";
 
        NRF :
        {
-          IPV4_ADDRESS = "${NRF_IPV4_ADDRESS}";
+          IPV4_ADDRESS = "10.11.1.41";
           # YOUR NRF CONFIG HERE (default: 80)
           PORT         = 80;
           # Set HTTP version for NRF (1 or 2). Default 1
@@ -163,53 +144,38 @@ SPGW-U =
           # YOUR NRF API VERSION HERE. Default v1
           API_VERSION  = "v1";
           # Set FQDN of NRF
-          FQDN         = "${NRF_FQDN}";
+          FQDN         = "oai-nrf";
        };
 
        # Additional info to be sent to NRF for supporting Network Slicing
        UPF_INFO = (
           {
-            NSSAI_SST = ${NSSAI_SST_01};
-            NSSAI_SD = "${NSSAI_SD_01}";
+            NSSAI_SST = 1;
+            NSSAI_SD = "0xFFFFFF";
             DNN_LIST = (
               {
-                DNN = "${DNN_01}";
+                DNN = "oai";
               }
             );
           }
           ,{
-            NSSAI_SST = ${NSSAI_SST_02};
-            NSSAI_SD = "${NSSAI_SD_02}";
+            NSSAI_SST = 1;
+            NSSAI_SD = "0xFFFFFF";
             DNN_LIST = (
               {
-                DNN = "${DNN_02}";
+                DNN = "openairinterface";
               }
             );
           }
           ,{
-            NSSAI_SST = ${NSSAI_SST_03};
-            NSSAI_SD = "${NSSAI_SD_03}";
+            NSSAI_SST = 1;
+            NSSAI_SD = "0xFFFFFF";
             DNN_LIST = (
               {
-                DNN = "${DNN_03}";
+                DNN = "ims";
               }
             );
           }
        );
     }
 };
-
-EOF
-
-# shellcheck disable=SC2035
-# shellcheck disable=SC2046
-sudo chown ubuntu:ubuntu $(pwd)/*
-
-# Pull the docker image
-docker pull "${IMAGE_NAME}"
-
-./wait_for_dependencies
-
-docker compose up -d
-
-exit
