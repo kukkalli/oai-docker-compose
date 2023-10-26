@@ -6,11 +6,21 @@ source $(pwd)/env_var
 . $(pwd)/env_var
 
 set -e
-echo "Waiting for UPF to launch on 80..."
+echo "Waiting for NRF at IP: ${NRF_IPV4_ADDRESS} to launch on 8080..."
 
-while ! nc -z "${UPF_IPV4_ADDRESS}" 80; do
-  echo "UPF at IP ${UPF_IPV4_ADDRESS} not connected"
+while ! nc -z "${NRF_IPV4_ADDRESS}" 8080; do
+  echo "NRF at IP ${NRF_IPV4_ADDRESS} not connected"
   sleep 0.1 # wait for 1/10 of the second before check again
 done
 
-echo "UPF launched"
+echo "NRF launched"
+
+set -e
+echo "Waiting for SMF to launch on 80..."
+
+while ! nc -z "${SMF_IPV4_ADDRESS}" 80; do
+  echo "SMF at IP ${SMF_IPV4_ADDRESS} not connected"
+  sleep 0.1 # wait for 1/10 of the second before check again
+done
+
+echo "SMF launched"
