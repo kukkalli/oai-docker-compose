@@ -1,43 +1,27 @@
 version: '3.8'
 services:
   oai-spgwu-tiny:
-    image: ${IMAGE_NAME:-oaisoftwarealliance/oai-spgwu-tiny:v1.5.1}
-    container_name: "oai-spgwu-tiny"
-    hostname: "oai-spgwu-tiny"
+    image: ${IMAGE_NAME:-oaisoftwarealliance/trf-gen-cn5g:latest}
+    container_name: "oai-trf-gen"
+    hostname: "oai-trf-gen"
+    entrypoint: /bin/bash -c \
+      "ip route add 12.1.0.0/16 via ${UPF_IPV4_ADDRESS} dev eth0; sleep infinity"
     ports:
       - "8085:8085/udp"
       - "2152:2152/udp"
       - "80:80"
       - "8080:8080"
+    healthcheck:
+      test: /bin/bash -c "ip r | grep 12.1.0"
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - ./hosts:/etc/hosts
-      - ./spgw_u.conf:/openair-spgwu-tiny/etc/spgw_u.conf
     environment:
       - TZ=${TZ:-Europe/Berlin}
-      - SGW_INTERFACE_NAME_FOR_S1U_S12_S4_UP=eth0
-      - SGW_INTERFACE_NAME_FOR_SX=eth0
-      - PGW_INTERFACE_NAME_FOR_SGI=eth0
-      - NETWORK_UE_NAT_OPTION=yes
-      - NETWORK_UE_IP=12.1.0.0/16
-      - ENABLE_5G_FEATURES=yes
-      - REGISTER_NRF=yes
-      - USE_FQDN_NRF=yes
-      - UPF_FQDN_5G=${UPF_FQDN_5G:-oai-spgwu-tiny}
-      - NRF_IPV4_ADDRESS=${NRF_IPV4_ADDRESS:-"10.11.1.41"}
-      - NRF_FQDN=${NRF_FQDN:-"oai-nrf"}
-      # Slice 0 (1, 0xFFFFFF)
-      - NSSAI_SST_0=1
-      - NSSAI_SD_0="0xFFFFFF"
-      - DNN_0=oai
-      # Slice 1 (1, 0xFFFFFF)
-      - NSSAI_SST_1=1
-      - DNN_1=openairinterface
-      # Slice 2 (1, 0xFFFFFF)
-      - NSSAI_SST_2=1
-      - DNN_2=ims
 #    depends_on:
-#      - oai-nrf
-#      - oai-smf
+#      - oai-spgwu-tiny
     cap_add:
       - NET_ADMIN
       - SYS_ADMIN
