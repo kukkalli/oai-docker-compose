@@ -16,9 +16,9 @@ done
 echo "NRF launched"
 
 set -e
-echo "Waiting for AUSF to launch on 80..."
+echo "Waiting for AUSF to launch on 8080..."
 
-while ! nc -z "${AUSF_IPV4_ADDRESS}" 80; do
+while ! nc -z "${AUSF_IPV4_ADDRESS}" 8080; do
   echo "AUSF at IP ${AUSF_IPV4_ADDRESS} not connected"
   sleep 0.1 # wait for 1/10 of the second before check again
 done
