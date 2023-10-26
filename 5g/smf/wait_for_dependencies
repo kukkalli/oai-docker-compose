@@ -1,26 +1,27 @@
 #!/bin/sh
 
-# source /home/ubuntu/env_var
-. /home/ubuntu/env_var
-
-set -e
-echo "Waiting for MySQL to launch on 3306..."
-# MYSQL_IP="$1"
-
-while ! nc -z "${MYSQL_IPV4_ADDRESS}" 3306; do
-  echo "MYSQL at IP $MYSQL_IP not connected"
-  sleep 0.1 # wait for 1/10 of the second before check again
-done
-
-echo "MYSQL launched"
+# shellcheck disable=SC2046
+# shellcheck disable=SC2039
+source $(pwd)/env_var
+. $(pwd)/env_var
 
 set -e
 echo "Waiting for NRF to launch on 8080..."
-# NRF_IP="$2"
 
 while ! nc -z "${NRF_IPV4_ADDRESS}" 8080; do
-  echo "NRF at IP $NRF_IP not connected"
+  echo "NRF at IP ${NRF_IPV4_ADDRESS} not connected"
   sleep 0.1 # wait for 1/10 of the second before check again
 done
 
 echo "NRF launched"
+
+set -e
+echo "Waiting for AMF to launch on 80..."
+
+while ! nc -z "${AMF_IPV4_ADDRESS}" 80; do
+  echo "AMF at IP ${AMF_IPV4_ADDRESS} not connected"
+  sleep 0.1 # wait for 1/10 of the second before check again
+done
+
+echo "AMF launched"
+

@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  oai-smf:
+    image: ${IMAGE_NAME:-oaisoftwarealliance/oai-smf:v1.5.1}
+    container_name: "oai-smf"
+    hostname: "oai-smf"
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "9090:9090"
+      - "8805:8805/udp"
+    volumes:
+      - ./hosts:/etc/hosts
+      - ./smf.conf:/openair-smf/etc/smf.conf
+    environment:
+      - TZ=${TZ:-Europe/Berlin}
+      - SMF_INTERFACE_NAME_FOR_N4=${SMF_INTERFACE_NAME_FOR_N4:-eth0}
+      - SMF_INTERFACE_NAME_FOR_SBI=${SMF_INTERFACE_NAME_FOR_N4:-eth0}
+      - DEFAULT_DNS_IPV4_ADDRESS=${DEFAULT_DNS_IPV4_ADDRESS:-8.8.8.8}
+      - DEFAULT_DNS_SEC_IPV4_ADDRESS=${DEFAULT_DNS_SEC_IPV4_ADDRESS:-4.4.4.4}
+      - AMF_IPV4_ADDRESS=${AMF_IPV4_ADDRESS:-10.11.2.155}
+      - AMF_FQDN=${AMF_FQDN:-oai-amf}
+      - UDM_IPV4_ADDRESS=${UDM_IPV4_ADDRESS:-10.11.1.122}
+      - UDM_FQDN=${UDM_FQDN:-oai-udm}
+      - UPF_IPV4_ADDRESS=${UPF_IPV4_ADDRESS:-10.11.2.86}
+      - UPF_FQDN_0=${UPF_FQDN_0:-oai-spgwu-tiny}
+      - NRF_IPV4_ADDRESS=${NRF_IPV4_ADDRESS:-10.11.1.41}
+      - NRF_FQDN=${NRF_FQDN:-oai-nrf}
+      - USE_LOCAL_SUBSCRIPTION_INFO=${USE_LOCAL_SUBSCRIPTION_INFO:-yes}
+      - REGISTER_NRF=${REGISTER_NRF:-yes}
+      - DISCOVER_UPF=${DISCOVER_UPF:-yes}
+      - USE_FQDN_DNS=${USE_FQDN_DNS:-yes}
+      - UE_MTU=${UE_MTU:-1500}
+      # Slice 0 (1, 0xFFFFFF)
+      - DNN_NI0=${DNN_NI0:-oai}
+      - TYPE0=${TYPE0:-IPv4}
+      - DNN_RANGE0=${DNN_RANGE0:-"12.1.1.2 - 12.1.1.254"}
+      - NSSAI_SST0=${NSSAI_SST0:-1}
+      - SESSION_AMBR_UL0=${SESSION_AMBR_UL0:-10Gbps}
+      - SESSION_AMBR_DL0=${SESSION_AMBR_DL0:-10Gbps}
+      # Slice 1 (1, 0xFFFFFF)
+      - DNN_NI1=${DNN_NI1:-openairinterface}
+      - TYPE1=${TYPE1:-IPv4v6}
+      - DNN_RANGE1=${DNN_RANGE1:-"12.1.2.2 - 12.1.2.254"}
+      - NSSAI_SST1=${NSSAI_SST1:-1}
+      - SESSION_AMBR_UL1=${SESSION_AMBR_UL1:-10Gbps}
+      - SESSION_AMBR_DL1=${SESSION_AMBR_DL1:-10Gbps}
+      # Slice 2 for ims
+      - DNN_NI2=${DNN_NI2:-ims}
+      - TYPE2=${TYPE2:-IPv4v6}
+      - DNN_RANGE2=${DNN_RANGE2:-"12.1.9.2 - 12.1.9.254"}
+      - NSSAI_SST2=${NSSAI_SST2:-1}
+      - SESSION_AMBR_UL2=${SESSION_AMBR_UL2:-10Gbps}
+      - SESSION_AMBR_DL2=${SESSION_AMBR_DL2:-10Gbps}
+      # IMS server
+      - DEFAULT_CSCF_IPV4_ADDRESS=${DEFAULT_CSCF_IPV4_ADDRESS:-10.11.1.118}
+

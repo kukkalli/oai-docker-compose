@@ -1,7 +1,9 @@
 #!/bin/sh
 
-# source /home/ubuntu/env_var
-. /home/ubuntu/env_var
+# shellcheck disable=SC2046
+# shellcheck disable=SC2039
+source $(pwd)/env_var
+. $(pwd)/env_var
 
 set -e
 echo "Waiting for NRF to launch on 8080..."
@@ -21,5 +23,5 @@ while ! nc -z "${AUSF_IPV4_ADDRESS}" 80; do
   sleep 0.1 # wait for 1/10 of the second before check again
 done
 
-echo "MYSQL launched"
+echo "AUSF launched"
 

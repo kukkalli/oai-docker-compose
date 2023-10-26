@@ -1,20 +1,22 @@
 #!/bin/bash
 
 # Source the environment variables
-source /home/ubuntu/env_var
+# shellcheck disable=SC2046
+source $(pwd)/env_var
 
 # Turn off any running docker compose
 docker compose down
 
 # remove existing files
-sudo rm -f /home/ubuntu/startup.log
-sudo rm -r -f /home/ubuntu/config.yaml
+sudo rm -f startup.log
+sudo rm -f config.yaml
 
 # Display the env_var file
-cat /home/ubuntu/env_var >> /home/ubuntu/startup.log
+cat env_var >> startup.log
 
 # shellcheck disable=SC2129
-cat > /home/ubuntu/config.yaml << EOF
+# shellcheck disable=SC2046
+cat > $(pwd)/spgw_u.conf << EOF
 ################################################################################
 # Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -35,220 +37,178 @@ cat > /home/ubuntu/config.yaml << EOF
 # For more information about the OpenAirInterface (OAI) Software Alliance:
 #      contact@openairinterface.org
 ################################################################################
+SPGW-U =
+{
+    # FQDN for 4G
+    FQDN = "${UPF_FQDN}";
+    #"gw.spgw.node.epc.mnc.mcc.";
+    # 0 is the default
+    INSTANCE      = 0;
+    # /var/run is the default
+    PID_DIRECTORY = "/var/run";
+    LOG_LEVEL     = "debug";
 
-# OAI CN Configuration File
-### This file can be used by all OAI NFs
-### Some fields are specific to an NF and will be ignored by other NFs
+    #ITTI_TASKS :
+    #{
+        #ITTI_TIMER_SCHED_PARAMS :
+        #{
+            #CPU_ID       = 1;
+            #SCHED_POLICY = "SCHED_FIFO"; # Values in { SCHED_OTHER, SCHED_IDLE, SCHED_BATCH, SCHED_FIFO, SCHED_RR }
+            #SCHED_PRIORITY = 85;
+        #};
+        #S1U_SCHED_PARAMS :
+        #{
+            #CPU_ID       = 1;
+            #SCHED_POLICY = "SCHED_FIFO"; # Values in { SCHED_OTHER, SCHED_IDLE, SCHED_BATCH, SCHED_FIFO, SCHED_RR }
+            #SCHED_PRIORITY = 84;
+        #};
+        #SX_SCHED_PARAMS :
+        #{
+            #CPU_ID       = 1;
+            #SCHED_POLICY = "SCHED_FIFO"; # Values in { SCHED_OTHER, SCHED_IDLE, SCHED_BATCH, SCHED_FIFO, SCHED_RR }
+            #SCHED_PRIORITY = 84;
+        #};
+        #ASYNC_CMD_SCHED_PARAMS :
+        #{
+            #CPU_ID       = 1;
+            #SCHED_POLICY = "SCHED_FIFO"; # Values in { SCHED_OTHER, SCHED_IDLE, SCHED_BATCH, SCHED_FIFO, SCHED_RR }
+            #SCHED_PRIORITY = 84;
+        #};
+    #};
 
-############# Common configuration
+    INTERFACES :
+    {
+        S1U_S12_S4_UP :
+        {
+            # S-GW binded interface for S1-U communication (GTPV1-U) can be ethernet interface, virtual ethernet interface, we don't advise wireless interfaces
+            # STRING, interface name, YOUR NETWORK CONFIG HERE
+            INTERFACE_NAME         = "eth0";
+            # STRING, CIDR or "read to let app read interface configured IP address
+            IPV4_ADDRESS           = "read";
+            #PORT                   = 2152;                                     # Default is 2152
+            SCHED_PARAMS :
+            {
+                #CPU_ID        = 2;
+                # Values in { SCHED_OTHER, SCHED_IDLE, SCHED_BATCH, SCHED_FIFO, SCHED_RR }
+                SCHED_POLICY   = "SCHED_FIFO";
+                SCHED_PRIORITY = 88;
+                POOL_SIZE      = 1;
+            };
+        };
+        SX :
+        {
+            # S/P-GW binded interface for SX communication
+            INTERFACE_NAME         = "eth0";
+            IPV4_ADDRESS           = "read";
+            #PORT                   = 8805;                         # Default is 8805
+            SCHED_PARAMS :
+            {
+                #CPU_ID        = 1;
+                SCHED_POLICY   = "SCHED_FIFO";
+                SCHED_PRIORITY = 88;
+                POOL_SIZE      = 1;
+            };
+        };
+        SGI :
+        {
+           # No config to set, the software will set the SGi interface to the interface used for the default route.
+            INTERFACE_NAME         = "eth0";
+            IPV4_ADDRESS           = "read";
+            SCHED_PARAMS :
+            {
+                #CPU_ID        = 3;
+                SCHED_POLICY   = "SCHED_FIFO";
+                SCHED_PRIORITY = 98;
+                POOL_SIZE      = 1;
+            };
+        };
+    };
 
-# Log level for all the NFs
-log_level:
-  general: debug
+    # SNAT Values in {yes, no}
+    SNAT = "yes";
 
-# If you enable registration, the other NFs will use the NRF discovery mechanism
-register_nf:
-  general: yes
+    PDN_NETWORK_LIST  = (
+                      {NETWORK_IPV4 = "12.1.0.0/16";} # 1 ITEM SUPPORTED ONLY
+                    );
 
-http_version: 2
+    SPGW-C_LIST = (
+         {IPV4_ADDRESS="127.0.0.1" ;}
+    );
 
-############## SBI Interfaces
-### Each NF takes its local SBI interfaces and remote interfaces from here, unless it gets them using NRF discovery mechanisms
-nfs:
-  amf:
-    host: oai-amf
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
-    n2:
-      interface_name: eth0
-      port: 38412
-  smf:
-    host: oai-smf
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
-    n4:
-      interface_name: eth0
-      port: 8805
-  udm:
-    host: oai-udm
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
-  udr:
-    host: oai-udr
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
-  ausf:
-    host: oai-ausf
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
-  nrf:
-    host: oai-nrf
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
-  pcf:
-    host: oai-pcf
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
-  nssf:
-    host: oai-nssf
-    sbi:
-      port: 8080
-      api_version: v1
-      interface_name: eth0
+    NON_STANDART_FEATURES :
+    {
+        # 'no' for standard features, yes for enhancing UL throughput
+        BYPASS_UL_PFCP_RULES = "no";
+    };
 
-#### Common for UDR and AMF
-database:
-  host: mysql
-  type: mysql
-  user: ${MYSQL_USER}"
-  password: ${MYSQL_PASSWORD}"
-  database_name: ${MYSQL_DATABASE}"
-  generate_random: true
-  connection_timeout: 300 # seconds
+    SUPPORT_5G_FEATURES:
+    {
+       # STRING, {"yes", "no"},
+       # Set to 'yes' to support 5G Features
+       ENABLE_5G_FEATURES = "yes";
+       # Set to 'yes' if UPF registers to an NRF
+       REGISTER_NRF       = "yes";
+       # Set to 'yes' if UPF relies on a DNS/FQDN service to resolve NRF's FQDN
+       USE_FQDN_NRF       = "yes";
+       # Set FQDN of UPF
+       UPF_FQDN_5G        = "${UPF_FQDN}";
 
-############## NF-specific configuration
-amf:
-  pid_directory: "/var/run"
-  amf_name: "OAI-AMF"
-  # This really depends on if we want to keep the "mini" version or not
-  support_features_options:
-    enable_simple_scenario: no
-    enable_nssf: no
-    enable_smf_selection: yes
-    use_external_udm: no
-  relative_capacity: 30
-  statistics_timer_interval: 20  #in seconds
-  emergency_support: false
-  served_guami_list:
-# PLMN list 01
-    - mcc: ${MCC_01}
-      mnc: ${MNC_01}
-      amf_region_id: ${AMF_REGION_ID_01}
-      amf_set_id: ${AMF_SET_ID_01}
-      amf_pointer: ${AMF_POINTER_01}
-# PLMN list 02
-    - mcc: ${MCC_02}
-      mnc: ${MNC_02}
-      amf_region_id: ${AMF_REGION_ID_02}
-      amf_set_id: ${AMF_SET_ID_02}
-      amf_pointer: ${AMF_POINTER_02}
-# PLMN Support List
-  plmn_support_list:
-    - mcc: ${PLMN_SL_MCC}
-      mnc: ${PLMN_SL_MNC}
-      tac: ${PLMN_SL_TAC}
-# NSSAI Values
-      nssai:
-# NSSAI Set 01
-        - sst: 1
-# NSSAI Set 02
-        - sst: 1
-          sd: 1
-# NSSAI Set 03
-        - sst: 222
-          sd: 123
+       NRF :
+       {
+          IPV4_ADDRESS = "${NRF_IPV4_ADDRESS}";
+          # YOUR NRF CONFIG HERE (default: 80)
+          PORT         = 80;
+          # Set HTTP version for NRF (1 or 2). Default 1
+          HTTP_VERSION = 1;
+          # YOUR NRF API VERSION HERE. Default v1
+          API_VERSION  = "v1";
+          # Set FQDN of NRF
+          FQDN         = "${NRF_FQDN}";
+       };
 
-  supported_integrity_algorithms:
-    - "NIA0"
-    - "NIA1"
-    - "NIA2"
-  supported_encryption_algorithms:
-    - "NEA0"
-    - "NEA1"
-    - "NEA2"
-
-smf:
-  ue_mtu: 1500
-  support_features:
-    use_local_subscription_info: yes # Use infos from local_subscription_info or from UDM
-    use_local_pcc_rules: yes # Use infos from local_pcc_rules or from PCF
-  # we resolve from NRF, this is just to configure usage_reporting
-  upfs:
-    - host: oai-spgwu
-      config:
-        enable_usage_reporting: no
-  ue_dns:
-    primary_ipv4: "1.1.1.1"
-    primary_ipv6: "2001:4860:4860::8888"
-    secondary_ipv4: "8.8.8.8"
-    secondary_ipv6: "2001:4860:4860::8888"
-  ims:
-    pcscf_ipv4: "${IMS_IPV4}"
-    pcscf_ipv6: "fe80::7915:f408:1787:db8b"
-
-  # the DNN you configure here should be configured in "dnns"
-  local_subscription_infos:
-    # DNN 01
-    - single_nssai:
-        sst: 1
-      dnn: "oai"
-      qos_profile:
-        5qi: 9
-        session_ambr_ul: "200Mbps"
-        session_ambr_dl: "400Mbps"
-
-    # DNN 02
-    - single_nssai:
-        sst: 1
-        sd: 1
-      dnn: "oai.ipv4"
-      qos_profile:
-        5qi: 9
-        session_ambr_ul: "100Mbps"
-        session_ambr_dl: "200Mbps"
-
-    # Default DNN
-    - single_nssai:
-        sst: 222
-        sd: 123
-      dnn: "default"
-      qos_profile:
-        5qi: 9
-        session_ambr_ul: "50Mbps"
-        session_ambr_dl: "100Mbps"
-
-## DNN configuration
-dnns:
-  - dnn: "${DNN_01_DNN}"
-    pdu_session_type: "IPV4"
-    ipv4_pool: "12.1.1.151 - 12.1.1.253"
-  - dnn: "${DNN_02_DNN}"
-    pdu_session_type: "IPV4"
-    ipv4_pool: "12.1.1.51 - 12.1.1.150"
-  - dnn: "${DNN_DEF_DNN}"
-    pdu_session_type: "IPV4"
-    ipv4_pool: "12.1.1.2 - 12.1.1.50"
-  - dnn: "ims"
-    pdu_session_type: "IPV4V6"
-    ipv4_pool: "14.1.1.2 - 14.1.1.253"
-
-pcf:
-  local_policy:
-    policy_decisions_path: /openair-pcf/policies/policy_decisions
-    pcc_rules_path: /openair-pcf/policies/pcc_rules
-    traffic_rules_path: /openair-pcf/policies/traffic_rules
-
-nssf:
-  slice_config_path: /openair-nssf/etc/nssf_slice_config.yaml
-
-udr:
-  udr_name: oai-udr
+       # Additional info to be sent to NRF for supporting Network Slicing
+       UPF_INFO = (
+          {
+            NSSAI_SST = ${NSSAI_SST_0};
+            NSSAI_SD = "0xFFFFFF";
+            DNN_LIST = (
+              {
+                DNN = "${DNN_0}";
+              }
+            );
+          }
+          ,{
+            NSSAI_SST = 1;
+            NSSAI_SD = "0xFFFFFF";
+            DNN_LIST = (
+              {
+                DNN = "${DNN_2}";
+              }
+            );
+          }
+          ,{
+            NSSAI_SST = ${NSSAI_SST_2};
+            NSSAI_SD = "0xFFFFFF";
+            DNN_LIST = (
+              {
+                DNN = "${DNN_2}";
+              }
+            );
+          }
+       );
+    }
+};
 
 EOF
+
+# shellcheck disable=SC2035
+# shellcheck disable=SC2046
+sudo chown ubuntu:ubuntu $(pwd)/*
+
+# Pull the docker image
+docker pull "${IMAGE_NAME}"
+
+./wait_for_dependencies
 
 docker compose up -d
 
